@@ -39,16 +39,7 @@ public class SiteConfigController {
                     return newConfig;
                 });
 
-        if (value instanceof String s) {
-            config.setValue(s);
-        } else {
-            try {
-                com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-                config.setValue(mapper.writeValueAsString(value));
-            } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-                throw new IllegalArgumentException("Invalid JSON value", e);
-            }
-        }
+        config.setValue(value);
 
         return siteConfigRepository.save(config);
     }

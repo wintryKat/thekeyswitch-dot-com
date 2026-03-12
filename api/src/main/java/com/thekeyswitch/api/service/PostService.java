@@ -49,7 +49,7 @@ public class PostService {
                 result.getTotalPages()
         );
 
-        return new PostConnection(result.getContent(), result.getTotalElements(), pageInfo);
+        return new PostConnection(result.getContent(), (int) result.getTotalElements(), pageInfo);
     }
 
     @Transactional(readOnly = true)

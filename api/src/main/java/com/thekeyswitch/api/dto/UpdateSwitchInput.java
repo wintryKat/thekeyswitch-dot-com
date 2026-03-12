@@ -11,7 +11,7 @@ public record UpdateSwitchInput(
         BigDecimal bottomOutForceGf,
         BigDecimal preTravelMm,
         BigDecimal totalTravelMm,
-        String forceCurve,
+        Object forceCurve,
         String soundProfile,
         String soundSampleUrl,
         String springType,

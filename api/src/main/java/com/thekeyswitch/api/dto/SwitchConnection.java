@@ -6,7 +6,7 @@ import java.util.List;
 
 public record SwitchConnection(
         List<Switch> nodes,
-        long totalCount,
+        int totalCount,
         PageInfo pageInfo
 ) {
 }

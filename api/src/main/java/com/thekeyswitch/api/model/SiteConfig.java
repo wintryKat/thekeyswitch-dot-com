@@ -21,7 +21,7 @@ public class SiteConfig {
 
     @Column(nullable = false, columnDefinition = "jsonb")
     @JdbcTypeCode(SqlTypes.JSON)
-    private String value;
+    private Object value;
 
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
@@ -44,11 +44,11 @@ public class SiteConfig {
         this.key = key;
     }
 
-    public String getValue() {
+    public Object getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 

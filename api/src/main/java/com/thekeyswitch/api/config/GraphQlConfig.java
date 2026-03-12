@@ -58,8 +58,11 @@ public class GraphQlConfig {
                 })
                 .build();
 
+        // Schema declares "scalar JSON" (uppercase) but ExtendedScalars.Json registers as "Json"
+        GraphQLScalarType jsonScalar = ExtendedScalars.Json.transform(builder -> builder.name("JSON"));
+
         return wiringBuilder -> wiringBuilder
-                .scalar(ExtendedScalars.Json)
+                .scalar(jsonScalar)
                 .scalar(ExtendedScalars.GraphQLLong)
                 .scalar(dateTimeScalar);
     }

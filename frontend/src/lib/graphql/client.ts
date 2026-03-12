@@ -1,41 +1,18 @@
 import { GraphQLClient } from "graphql-request";
 
-const GRAPHQL_INTERNAL_URL = process.env.GRAPHQL_INTERNAL_URL;
-const GRAPHQL_PUBLIC_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL;
+const INTERNAL_URL = process.env.GRAPHQL_INTERNAL_URL || "http://localhost:8080/graphql";
+const PUBLIC_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL || "http://localhost/graphql";
 
-function getGraphQLUrl(): string {
-  if (typeof window === "undefined" && GRAPHQL_INTERNAL_URL) {
-    return GRAPHQL_INTERNAL_URL;
+export function getServerClient(token?: string): GraphQLClient {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
   }
-
-  if (GRAPHQL_PUBLIC_URL) {
-    return GRAPHQL_PUBLIC_URL;
-  }
-
-  return "http://localhost:8080/graphql";
+  return new GraphQLClient(INTERNAL_URL, { headers });
 }
 
-let serverClient: GraphQLClient | null = null;
-
-export function getClient(): GraphQLClient {
-  if (serverClient) {
-    return serverClient;
-  }
-
-  serverClient = new GraphQLClient(getGraphQLUrl(), {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  return serverClient;
-}
-
-export function createClient(customHeaders?: Record<string, string>): GraphQLClient {
-  return new GraphQLClient(getGraphQLUrl(), {
-    headers: {
-      "Content-Type": "application/json",
-      ...customHeaders,
-    },
-  });
+export function getPublicUrl(): string {
+  return PUBLIC_URL;
 }

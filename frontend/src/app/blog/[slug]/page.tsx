@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -17,7 +18,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 md:py-24">
-      <a
+      <Link
         href="/blog"
         className="mb-6 inline-flex items-center gap-1 text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
       >
@@ -34,7 +35,7 @@ export default async function BlogPostPage({ params }: Props) {
           <path d="M13 8H3M7 4l-4 4 4 4" />
         </svg>
         Back to Blog
-      </a>
+      </Link>
       <article>
         <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-[var(--foreground)]">
           {slug.replace(/-/g, " ")}

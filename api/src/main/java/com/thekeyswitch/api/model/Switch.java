@@ -47,7 +47,7 @@ public class Switch {
 
     @Column(name = "force_curve", columnDefinition = "jsonb")
     @JdbcTypeCode(SqlTypes.JSON)
-    private String forceCurve;
+    private Object forceCurve;
 
     @Column(name = "sound_profile", length = 100)
     private String soundProfile;
@@ -159,11 +159,11 @@ public class Switch {
         this.totalTravelMm = totalTravelMm;
     }
 
-    public String getForceCurve() {
+    public Object getForceCurve() {
         return forceCurve;
     }
 
-    public void setForceCurve(String forceCurve) {
+    public void setForceCurve(Object forceCurve) {
         this.forceCurve = forceCurve;
     }
 

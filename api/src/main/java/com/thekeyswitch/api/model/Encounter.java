@@ -97,6 +97,15 @@ public class Encounter {
         this.abstractText = abstractText;
     }
 
+    // GraphQL schema field is "abstract" — this getter matches that name
+    public String getAbstract() {
+        return abstractText;
+    }
+
+    public void setAbstract(String abstractText) {
+        this.abstractText = abstractText;
+    }
+
     public List<String> getTags() {
         return tags;
     }

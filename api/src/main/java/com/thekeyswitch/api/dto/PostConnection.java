@@ -6,7 +6,7 @@ import java.util.List;
 
 public record PostConnection(
         List<Post> nodes,
-        long totalCount,
+        int totalCount,
         PageInfo pageInfo
 ) {
 }

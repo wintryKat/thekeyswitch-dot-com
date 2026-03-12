@@ -49,7 +49,7 @@ public class SwitchService {
                 result.getTotalPages()
         );
 
-        return new SwitchConnection(result.getContent(), result.getTotalElements(), pageInfo);
+        return new SwitchConnection(result.getContent(), (int) result.getTotalElements(), pageInfo);
     }
 
     @Transactional(readOnly = true)

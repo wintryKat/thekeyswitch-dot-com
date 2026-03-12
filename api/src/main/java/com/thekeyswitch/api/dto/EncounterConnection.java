@@ -6,7 +6,7 @@ import java.util.List;
 
 public record EncounterConnection(
         List<Encounter> nodes,
-        long totalCount,
+        int totalCount,
         PageInfo pageInfo
 ) {
 }
