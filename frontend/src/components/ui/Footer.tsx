@@ -9,7 +9,7 @@ export default function Footer() {
           Built with Next.js, Spring Boot &amp; PostgreSQL
           <span aria-hidden="true" className="text-[var(--surface-border)]">|</span>
           <a
-            href="https://github.com/thekeyswitch"
+            href="https://github.com/wintryKat/thekeyswitch-dot-com"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
