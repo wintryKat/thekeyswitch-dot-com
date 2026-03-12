@@ -1,5 +1,10 @@
 import Link from "next/link";
 
+const decorativeIconProps = {
+  "aria-hidden": true,
+  focusable: "false",
+} as const;
+
 const features = [
   {
     href: "/switches",
@@ -7,7 +12,7 @@ const features = [
     description:
       "Interactive force-curve visualizations for mechanical keyboard switches, powered by D3.js and real actuation data.",
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg {...decorativeIconProps} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="6" width="20" height="12" rx="2" />
         <path d="M6 10h2v4H6z" />
         <path d="M10 10h4v4h-4z" />
@@ -21,7 +26,7 @@ const features = [
     description:
       "Real-time weather data with interactive maps, forecasts, and historical trend analysis.",
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg {...decorativeIconProps} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
         <circle cx="12" cy="12" r="4" />
       </svg>
@@ -33,7 +38,7 @@ const features = [
     description:
       "Immersive 3D experiences built with WebXR, Three.js, and spatial computing APIs for VR and AR headsets.",
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg {...decorativeIconProps} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M2 8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8z" />
         <circle cx="8" cy="12" r="2" />
         <circle cx="16" cy="12" r="2" />
@@ -47,7 +52,7 @@ const features = [
     description:
       "Live observability dashboards showing infrastructure health, API latency, and deployment stats.",
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg {...decorativeIconProps} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M3 3v18h18" />
         <path d="M7 17l4-8 4 4 4-10" />
       </svg>
@@ -59,7 +64,7 @@ const features = [
     description:
       "Technical deep-dives on architecture decisions, performance optimization, and lessons from production.",
     icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg {...decorativeIconProps} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
         <line x1="6" y1="8" x2="18" y2="8" />
         <line x1="6" y1="12" x2="14" y2="12" />
@@ -129,6 +134,7 @@ export default function HomePage() {
               <span className="inline-flex items-center gap-1 text-sm font-medium text-[var(--accent-light)] transition-transform group-hover:translate-x-1">
                 Explore
                 <svg
+                  {...decorativeIconProps}
                   width="16"
                   height="16"
                   viewBox="0 0 16 16"

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
 import org.springframework.graphql.test.tester.GraphQlTester;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.OffsetDateTime;
@@ -88,6 +89,33 @@ class AuthControllerIntegrationTest {
                         refreshToken(token: "bad.token") {
                             token
                         }
+                    }
+                """)
+                .execute()
+                .errors()
+                .satisfy(errors -> assertThat(errors).isNotEmpty());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = "ADMIN")
+    void changePassword_whenAuthenticated_returnsTrue() {
+        when(authService.changePassword("admin", "current-password", "new-password"))
+                .thenReturn(true);
+
+        graphQlTester.document("""
+                    mutation {
+                        changePassword(currentPassword: "current-password", newPassword: "new-password")
+                    }
+                """)
+                .execute()
+                .path("changePassword").entity(Boolean.class).isEqualTo(true);
+    }
+
+    @Test
+    void changePassword_whenUnauthenticated_returnsError() {
+        graphQlTester.document("""
+                    mutation {
+                        changePassword(currentPassword: "current-password", newPassword: "new-password")
                     }
                 """)
                 .execute()

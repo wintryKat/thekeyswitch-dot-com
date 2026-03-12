@@ -29,6 +29,7 @@ type Mutation {
     # Auth
     login(username: String!, password: String!): AuthPayload!
     refreshToken(token: String!): AuthPayload!
+    changePassword(currentPassword: String!, newPassword: String!): Boolean!
 
     # Blog (authenticated)
     createPost(input: CreatePostInput!): Post!

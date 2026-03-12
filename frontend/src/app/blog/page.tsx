@@ -5,6 +5,11 @@ import { GET_POSTS } from "@/lib/graphql/queries";
 import type { Post, PostConnection } from "@/lib/graphql/types";
 import Badge from "@/components/ui/Badge";
 
+const decorativeIconProps = {
+  "aria-hidden": true,
+  focusable: "false",
+} as const;
+
 export const metadata: Metadata = {
   title: "Blog | The Key Switch",
   description:
@@ -114,6 +119,7 @@ export default async function BlogPage() {
         <div className="flex flex-col items-center justify-center rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] px-8 py-20 text-center">
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--accent)]/10 text-[var(--accent-light)]">
             <svg
+              {...decorativeIconProps}
               width="32"
               height="32"
               viewBox="0 0 24 24"

@@ -1,6 +1,7 @@
 package com.thekeyswitch.api.config;
 
 import com.thekeyswitch.api.security.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -24,15 +25,23 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public InternalNetworkAuthorizationManager internalNetworkAuthorizationManager(
+            @Value("${security.internal-allowed-networks}") String allowedNetworks) {
+        return new InternalNetworkAuthorizationManager(allowedNetworks);
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   InternalNetworkAuthorizationManager internalNetworkAuthorizationManager)
+            throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/graphql/**").permitAll()
                         .requestMatchers("/graphiql/**").permitAll()
-                        .requestMatchers("/actuator/health").permitAll()
-                        .requestMatchers("/actuator/prometheus").permitAll()
+                        .requestMatchers("/actuator/health", "/actuator/prometheus")
+                        .access(internalNetworkAuthorizationManager)
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

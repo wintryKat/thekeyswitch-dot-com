@@ -1,4 +1,3 @@
--- Default admin user (password: "changeme" - bcrypt hashed)
--- IMPORTANT: Change this password immediately after first login
-INSERT INTO admin_users (id, username, password_hash) VALUES
-(gen_random_uuid(), 'admin', '$2a$10$8K1p/a0dL1LXMIgoEDFrwOfMQkZHBi1eSDdK.EZvKTqZBrMLCAhi2');
+-- Admin users are bootstrapped at application startup via
+-- ADMIN_BOOTSTRAP_USERNAME / ADMIN_BOOTSTRAP_PASSWORD.
+-- This migration is intentionally empty so credentials are never shipped in source control.

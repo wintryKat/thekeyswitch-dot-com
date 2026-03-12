@@ -42,8 +42,14 @@ thekeyswitch.com {
             reverse_proxy api:8080
         }
 
-        # Actuator health (internal only)
+        # Actuator endpoints (internal only)
         handle /actuator/health {
+            @internal remote_ip 127.0.0.1 172.16.0.0/12 192.168.0.0/16 10.0.0.0/8
+            reverse_proxy @internal api:8080
+            respond 403
+        }
+
+        handle /actuator/prometheus {
             @internal remote_ip 172.16.0.0/12 192.168.0.0/16 10.0.0.0/8
             reverse_proxy @internal api:8080
             respond 403

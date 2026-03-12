@@ -15,6 +15,11 @@ const COLORS = [
   "#ef4444", // red
 ];
 
+const decorativeIconProps = {
+  "aria-hidden": true,
+  focusable: "false",
+} as const;
+
 interface CurvePoint {
   distance_mm: number;
   force_gf: number;
@@ -342,6 +347,7 @@ export default function ForceCurveChart({ switches }: ForceCurveChartProps) {
       <div className="flex h-72 items-center justify-center rounded-xl border border-dashed border-[var(--surface-border)] bg-[var(--surface)]/50 text-[var(--muted)]">
         <div className="text-center">
           <svg
+            {...decorativeIconProps}
             className="mx-auto mb-3 h-10 w-10 opacity-40"
             fill="none"
             viewBox="0 0 24 24"
@@ -367,6 +373,8 @@ export default function ForceCurveChart({ switches }: ForceCurveChartProps) {
         ref={svgRef}
         className="w-full"
         style={{ overflow: "visible" }}
+        role="img"
+        aria-label={`Force curve comparison for ${switches.map((sw) => sw.name).join(", ")}`}
       />
       {tooltip && (
         <div

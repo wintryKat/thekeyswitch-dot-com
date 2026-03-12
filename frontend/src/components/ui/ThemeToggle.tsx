@@ -18,6 +18,8 @@ export default function ThemeToggle() {
       {theme === "dark" ? (
         /* Sun icon — shown in dark mode, click to go light */
         <svg
+          aria-hidden="true"
+          focusable="false"
           width="18"
           height="18"
           viewBox="0 0 24 24"
@@ -40,6 +42,8 @@ export default function ThemeToggle() {
       ) : (
         /* Moon icon — shown in light mode, click to go dark */
         <svg
+          aria-hidden="true"
+          focusable="false"
           width="18"
           height="18"
           viewBox="0 0 24 24"

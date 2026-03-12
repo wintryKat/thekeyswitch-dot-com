@@ -19,7 +19,13 @@ export default function GaugeChart({
 
   return (
     <div className="flex flex-col items-center">
-      <svg width="160" height="160" viewBox="0 0 160 160">
+      <svg
+        width="160"
+        height="160"
+        viewBox="0 0 160 160"
+        role="img"
+        aria-label={`${label}: ${clampedValue.toFixed(1)} percent`}
+      >
         {/* Background circle */}
         <circle
           cx="80"

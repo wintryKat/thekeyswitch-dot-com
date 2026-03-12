@@ -16,6 +16,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -98,5 +100,48 @@ class AuthServiceTest {
         assertThatThrownBy(() -> authService.refreshToken("bad.token"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Invalid or expired token");
+    }
+
+    @Test
+    void changePassword_withValidCredentials_updatesStoredHash() {
+        when(adminUserRepository.findByUsername("admin")).thenReturn(Optional.of(adminUser));
+        when(passwordEncoder.matches("current-password", "$2a$10$hashedpassword")).thenReturn(true);
+        when(passwordEncoder.matches("new-password", "$2a$10$hashedpassword")).thenReturn(false);
+        when(passwordEncoder.encode("new-password")).thenReturn("$2a$10$newhash");
+        when(adminUserRepository.save(any(AdminUser.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        boolean changed = authService.changePassword("admin", "current-password", "new-password");
+
+        assertThat(changed).isTrue();
+        assertThat(adminUser.getPasswordHash()).isEqualTo("$2a$10$newhash");
+        verify(adminUserRepository).save(adminUser);
+    }
+
+    @Test
+    void changePassword_withWrongCurrentPassword_throwsException() {
+        when(adminUserRepository.findByUsername("admin")).thenReturn(Optional.of(adminUser));
+        when(passwordEncoder.matches("wrong-password", "$2a$10$hashedpassword")).thenReturn(false);
+
+        assertThatThrownBy(() -> authService.changePassword("admin", "wrong-password", "new-password"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Current password is incorrect");
+    }
+
+    @Test
+    void changePassword_withBlankNewPassword_throwsException() {
+        assertThatThrownBy(() -> authService.changePassword("admin", "current-password", " "))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("New password must not be blank");
+    }
+
+    @Test
+    void changePassword_withSamePassword_throwsException() {
+        when(adminUserRepository.findByUsername("admin")).thenReturn(Optional.of(adminUser));
+        when(passwordEncoder.matches("current-password", "$2a$10$hashedpassword")).thenReturn(true);
+        when(passwordEncoder.matches("current-password", "$2a$10$hashedpassword")).thenReturn(true);
+
+        assertThatThrownBy(() -> authService.changePassword("admin", "current-password", "current-password"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("New password must be different from the current password");
     }
 }

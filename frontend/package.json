@@ -17,8 +17,6 @@
     "@react-three/postprocessing": "^3.0.4",
     "@react-three/xr": "^6.6.29",
     "@types/d3": "^7.4.3",
-    "@urql/core": "^5.1.0",
-    "@urql/next": "^1.1.0",
     "d3": "^7.9.0",
     "graphql": "^16.10.0",
     "graphql-request": "^7.1.0",
@@ -29,8 +27,7 @@
     "recharts": "^3.8.0",
     "rehype-highlight": "^7.0.2",
     "remark-gfm": "^4.0.1",
-    "three": "^0.183.2",
-    "urql": "^4.2.0"
+    "three": "^0.183.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",

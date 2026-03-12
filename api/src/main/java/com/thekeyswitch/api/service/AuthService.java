@@ -6,6 +6,8 @@ import com.thekeyswitch.api.repository.AdminUserRepository;
 import com.thekeyswitch.api.security.JwtTokenProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -54,5 +56,27 @@ public class AuthService {
                 .atOffset(ZoneOffset.UTC);
 
         return new AuthPayload(newToken, expiresAt);
+    }
+
+    @Transactional
+    public boolean changePassword(String username, String currentPassword, String newPassword) {
+        if (!StringUtils.hasText(newPassword)) {
+            throw new IllegalArgumentException("New password must not be blank");
+        }
+
+        AdminUser user = adminUserRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
+
+        if (!passwordEncoder.matches(currentPassword, user.getPasswordHash())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        if (passwordEncoder.matches(newPassword, user.getPasswordHash())) {
+            throw new IllegalArgumentException("New password must be different from the current password");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        adminUserRepository.save(user);
+        return true;
     }
 }

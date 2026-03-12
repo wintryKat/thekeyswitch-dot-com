@@ -122,6 +122,8 @@ export default function MetricsPage() {
       {!metrics && !error && (
         <div className="flex items-center gap-3 py-24 justify-center text-[var(--muted)]">
           <svg
+            aria-hidden="true"
+            focusable="false"
             className="h-5 w-5 animate-spin"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

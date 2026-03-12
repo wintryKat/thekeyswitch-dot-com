@@ -9,6 +9,11 @@ import type { Post, PostConnection } from "@/lib/graphql/types";
 import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 
+const decorativeIconProps = {
+  "aria-hidden": true,
+  focusable: "false",
+} as const;
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -81,6 +86,7 @@ export default async function BlogPostPage({ params }: Props) {
           className="mb-6 inline-flex items-center gap-1 text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
         >
           <svg
+            {...decorativeIconProps}
             width="16"
             height="16"
             viewBox="0 0 16 16"
@@ -117,6 +123,7 @@ export default async function BlogPostPage({ params }: Props) {
         className="mb-8 inline-flex items-center gap-1 text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
       >
         <svg
+          {...decorativeIconProps}
           width="16"
           height="16"
           viewBox="0 0 16 16"
@@ -177,6 +184,7 @@ export default async function BlogPostPage({ params }: Props) {
             <div className="flex items-start gap-4">
               <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
                 <svg
+                  {...decorativeIconProps}
                   width="20"
                   height="20"
                   viewBox="0 0 24 24"

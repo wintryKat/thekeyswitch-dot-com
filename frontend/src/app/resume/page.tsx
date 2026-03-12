@@ -39,6 +39,11 @@ interface Project {
   description: string;
 }
 
+const decorativeIconProps = {
+  "aria-hidden": true,
+  focusable: "false",
+} as const;
+
 const fallbackExperience: Experience[] = [
   {
     company: "The Key Switch",
@@ -48,10 +53,10 @@ const fallbackExperience: Experience[] = [
     endDate: null,
     highlights: [
       "Designed and built a full-stack portfolio platform with Next.js 15, Spring Boot, and PostgreSQL",
-      "Implemented GraphQL API with Netflix DGS framework serving keyboard switch data and blog content",
+      "Implemented a Spring for GraphQL API serving keyboard switch data and blog content",
       "Built interactive force-curve visualizations with D3.js for mechanical keyboard switch comparison",
       "Set up CI/CD pipeline with GitHub Actions, Docker Compose, and Caddy reverse proxy",
-      "Integrated Prometheus, Grafana, and Loki for full observability stack",
+      "Integrated Prometheus, container metrics, and custom dashboards for observability",
     ],
   },
   {
@@ -121,7 +126,7 @@ const fallbackSkills: SkillGroup[] = [
       { name: "CI/CD (GitHub Actions)", level: 85 },
       { name: "Kubernetes", level: 70 },
       { name: "AWS / Cloudflare", level: 75 },
-      { name: "Observability (Prometheus/Grafana)", level: 80 },
+      { name: "Observability (Prometheus/Micrometer)", level: 80 },
     ],
   },
 ];
@@ -209,6 +214,7 @@ export default async function ResumePage() {
           className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[var(--accent)]/25 transition-all hover:bg-[var(--accent-light)] hover:shadow-[var(--accent)]/40"
         >
           <svg
+            {...decorativeIconProps}
             width="16"
             height="16"
             viewBox="0 0 24 24"
@@ -346,6 +352,7 @@ export default async function ResumePage() {
               <span className="inline-flex items-center gap-1 text-sm font-medium text-[var(--accent-light)] transition-transform group-hover:translate-x-1">
                 View Project
                 <svg
+                  {...decorativeIconProps}
                   width="16"
                   height="16"
                   viewBox="0 0 16 16"

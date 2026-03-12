@@ -104,6 +104,8 @@ export default function SwitchExplorer({ initialSwitches }: SwitchExplorerProps)
           {/* Search */}
           <div className="relative">
             <svg
+              aria-hidden="true"
+              focusable="false"
               className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted)]"
               fill="none"
               viewBox="0 0 24 24"

@@ -11,7 +11,7 @@ import Skeleton from "@/components/ui/Skeleton";
 
 function getToken(): string | null {
   if (typeof document === "undefined") return null;
-  const match = document.cookie.match(/(?:^|;\s*)token=([^;]*)/);
+  const match = document.cookie.match(/(?:^|;\s*)auth-token=([^;]*)/);
   return match ? decodeURIComponent(match[1]) : null;
 }
 

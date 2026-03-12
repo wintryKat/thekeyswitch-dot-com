@@ -73,7 +73,7 @@ Hiring managers and technical interviewers evaluating senior web engineering can
 | Language | TypeScript | 5.7+ | Strict mode |
 | Styling | Tailwind CSS | 4.0 | CSS-first config via `@import "tailwindcss"`, PostCSS plugin |
 | GraphQL (server) | graphql-request | 7.1 | Used in server components via `getServerClient()` |
-| GraphQL (client) | urql | 4.2 | Installed but unused — graphql-request used throughout |
+| GraphQL client | graphql-request | 7.1 | Used for both server components and client-side mutations/queries |
 | 3D Graphics | Three.js | 0.183 | Via React Three Fiber 9.5, Drei 10.7, R3F XR 6.6 |
 | Data Viz (force curves) | D3.js | 7.9 | Direct SVG manipulation, not a wrapper library |
 | Data Viz (charts) | Recharts | 3.8 | Area charts, line charts, responsive containers |
@@ -283,7 +283,8 @@ Production: `-Xmx512m -Xms256m` — appropriate for a single-user portfolio site
 | V1 | Initial schema: posts, switches, site_config, admin_users, encounters with all indexes |
 | V2 | Seed site_config: profile.hero, profile.skills, profile.experience, profile.education, profile.projects |
 | V3 | Seed 20 mechanical keyboard switches with realistic force curve JSONB data |
-| V4 | Seed admin user (username: `admin`, password: bcrypt of `changeme`) |
+| V4 | Reserve admin bootstrap migration slot (credentials no longer stored in Flyway) |
+| V7 | Remove any legacy seeded `changeme` admin hash from existing deployments |
 | V5 | Seed 3 blog posts including one AI guest writer post with author_meta JSONB |
 | V6 | Fix enum case: `UPDATE switches SET type = UPPER(type)`, same for posts.status and posts.author_type |
 
@@ -331,7 +332,7 @@ Tailwind CSS 4 dark variant configured via `@custom-variant dark (&:where(.dark,
 
 ### Key Technical Decisions
 
-- **`graphql-request` everywhere, not urql.** urql is installed but unused. `graphql-request` is simpler for server components and the admin panel's imperative fetch pattern.
+- **`graphql-request` everywhere.** The frontend uses `graphql-request` on the server and direct `fetch()` calls for client-side GraphQL operations, keeping the transport simple and explicit.
 - **`output: 'standalone'` in next.config.js.** Produces a minimal production build for Docker.
 - **Dynamic imports for Three.js.** `WorkshopScene` loaded via `next/dynamic` with `ssr: false` to avoid server-side WebGL errors.
 - **Recharts `ResponsiveContainer`.** All charts wrapped for automatic resizing.
@@ -647,7 +648,7 @@ Any HTTP (port 80) request to any hostname → `301` to `https://thekeyswitch.co
 
 - **20 keyboard switches** with full specs and force curve JSONB data: Cherry MX (Red, Blue, Brown, Black, Speed Silver, Silent Red), Gateron (Yellow, Red, Black Ink V2, Milky Yellow), Kailh (Box White, Box Jade, Box Navy, Speed Silver), Holy Panda, Zealios V2, Alpaca V2, Boba U4T, Durock POM, NK Cream
 - **3 blog posts**: architecture decisions (human), force curve analysis (AI_AGENT), keyboard switches overview (human, draft — not published)
-- **1 admin user**: username `admin`, password `changeme` (bcrypt hashed)
+- **Bootstrap admin user**: created at startup from `ADMIN_BOOTSTRAP_USERNAME` / `ADMIN_BOOTSTRAP_PASSWORD` when no admin users exist
 - **5 site config entries**: profile.hero, profile.skills, profile.experience, profile.education, profile.projects
 
 ---
@@ -734,7 +735,7 @@ Default page size: 20. Maximum: 100.
 
 ### Architectural Compromises
 
-1. **urql installed but unused.** graphql-request was simpler for the server component + admin panel pattern. urql remains as a dependency but adds ~50KB to the client bundle unused.
+1. **Metrics subscriptions still poll.** The GraphQL schema defines a subscription, but the frontend currently uses 5-second polling rather than a live WebSocket channel.
 
 2. **H2 for API tests, not PostgreSQL.** Integration tests use H2 in PostgreSQL mode which doesn't support TEXT[] arrays or JSONB natively. Workaround: integration tests mock repositories via `@MockitoBean`. This means repository-level queries (native SQL with `ANY()`) are not tested against a real database in CI.
 
@@ -757,7 +758,7 @@ Default page size: 20. Maximum: 100.
 ### Security Notes
 
 - CSP includes `'unsafe-eval'` and `'unsafe-inline'` for scripts — required by Next.js and Three.js runtime. This weakens XSS protection.
-- Default admin password is `changeme` — must be changed immediately in production.
+- Bootstrap admin credentials are provided via environment variables and should be removed from `.env` after the initial account is created.
 - JWT secret in `.env.example` says "generate with openssl rand" — critical to actually do this.
 - No CAPTCHA on contact form (just honeypot) — sophisticated bots may bypass it.
 

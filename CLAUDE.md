@@ -8,7 +8,7 @@ Portfolio site at thekeyswitch.com. Monorepo with Spring Boot GraphQL API, Next.
 
 See `ARCHITECTURE.md` for the full specification.
 
-- **Frontend:** Next.js 15 (App Router), TypeScript, Tailwind CSS 4, urql (client), graphql-request (server)
+- **Frontend:** Next.js 15 (App Router), TypeScript, Tailwind CSS 4, graphql-request
 - **API:** Spring Boot 3.x, Java 21, Spring for GraphQL, Spring Data JPA, Flyway
 - **Database:** PostgreSQL 16
 - **Infrastructure:** Docker Compose, Caddy (reverse proxy + TLS), CrowdSec (WAF), Prometheus + exporters
@@ -30,7 +30,7 @@ scripts/     — VPS setup and deployment scripts
 - **Secrets:** NEVER commit secrets. All secrets go in `.env` (gitignored). Use `.env.example` as template.
 - **Branching:** `feat/<name>` branches, merge to `main` for deploy.
 - **API data flow:** Frontend → Caddy → Next.js or Spring Boot API → PostgreSQL. Frontend never talks to DB directly.
-- **GraphQL client split:** Server components use `graphql-request` with `GRAPHQL_INTERNAL_URL`. Client components use `urql` with `NEXT_PUBLIC_GRAPHQL_URL`.
+- **GraphQL client split:** Server components use `graphql-request` with `GRAPHQL_INTERNAL_URL`. Client components use `fetch`/`graphql-request` against `NEXT_PUBLIC_GRAPHQL_URL`.
 - **Spring Boot memory:** Always `-Xmx512m -Xms256m`.
 - **Database migrations:** Flyway in `api/src/main/resources/db/migration/`. Naming: `V1__description.sql`.
 
