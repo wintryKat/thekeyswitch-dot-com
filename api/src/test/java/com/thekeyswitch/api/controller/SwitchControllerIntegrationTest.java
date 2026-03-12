@@ -1,5 +1,7 @@
 package com.thekeyswitch.api.controller;
 
+import com.thekeyswitch.api.config.GraphQlConfig;
+import com.thekeyswitch.api.config.MethodSecurityTestConfig;
 import com.thekeyswitch.api.dto.PageInfo;
 import com.thekeyswitch.api.dto.SwitchConnection;
 import com.thekeyswitch.api.model.Switch;
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.graphql.test.tester.GraphQlTester;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -23,6 +26,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @GraphQlTest(SwitchController.class)
+@Import({GraphQlConfig.class, MethodSecurityTestConfig.class})
 class SwitchControllerIntegrationTest {
 
     @Autowired
@@ -41,7 +45,7 @@ class SwitchControllerIntegrationTest {
         sampleSwitch.setId(switchId);
         sampleSwitch.setName("Cherry MX Red");
         sampleSwitch.setManufacturer("Cherry");
-        sampleSwitch.setType("linear");
+        sampleSwitch.setType("LINEAR");
         sampleSwitch.setActuationForceGf(new BigDecimal("45.0"));
         sampleSwitch.setBottomOutForceGf(new BigDecimal("60.0"));
         sampleSwitch.setPreTravelMm(new BigDecimal("2.00"));
@@ -79,7 +83,7 @@ class SwitchControllerIntegrationTest {
                 .path("switches.totalCount").entity(Integer.class).isEqualTo(1)
                 .path("switches.nodes[0].name").entity(String.class).isEqualTo("Cherry MX Red")
                 .path("switches.nodes[0].manufacturer").entity(String.class).isEqualTo("Cherry")
-                .path("switches.nodes[0].type").entity(String.class).isEqualTo("linear")
+                .path("switches.nodes[0].type").entity(String.class).isEqualTo("LINEAR")
                 .path("switches.pageInfo.hasNextPage").entity(Boolean.class).isEqualTo(false);
     }
 
@@ -147,7 +151,7 @@ class SwitchControllerIntegrationTest {
                 .execute()
                 .path("switch.name").entity(String.class).isEqualTo("Cherry MX Red")
                 .path("switch.manufacturer").entity(String.class).isEqualTo("Cherry")
-                .path("switch.type").entity(String.class).isEqualTo("linear")
+                .path("switch.type").entity(String.class).isEqualTo("LINEAR")
                 .path("switch.soundProfile").entity(String.class).isEqualTo("quiet");
     }
 
@@ -175,7 +179,7 @@ class SwitchControllerIntegrationTest {
         switch2.setId(UUID.randomUUID());
         switch2.setName("Gateron Yellow");
         switch2.setManufacturer("Gateron");
-        switch2.setType("linear");
+        switch2.setType("LINEAR");
         switch2.setTags(List.of());
         switch2.setCreatedAt(OffsetDateTime.now());
         switch2.setUpdatedAt(OffsetDateTime.now());
@@ -224,7 +228,7 @@ class SwitchControllerIntegrationTest {
         created.setId(UUID.randomUUID());
         created.setName("New Switch");
         created.setManufacturer("Test Mfg");
-        created.setType("linear");
+        created.setType("LINEAR");
         created.setTags(List.of());
         created.setCreatedAt(OffsetDateTime.now());
         created.setUpdatedAt(OffsetDateTime.now());
@@ -247,7 +251,7 @@ class SwitchControllerIntegrationTest {
                 .execute()
                 .path("createSwitch.name").entity(String.class).isEqualTo("New Switch")
                 .path("createSwitch.manufacturer").entity(String.class).isEqualTo("Test Mfg")
-                .path("createSwitch.type").entity(String.class).isEqualTo("linear");
+                .path("createSwitch.type").entity(String.class).isEqualTo("LINEAR");
     }
 
     // ── Mutation: updateSwitch (requires auth) ────────────────────────────────

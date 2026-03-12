@@ -1,10 +1,13 @@
 package com.thekeyswitch.api.controller;
 
+import com.thekeyswitch.api.config.GraphQlConfig;
+import com.thekeyswitch.api.config.MethodSecurityTestConfig;
 import com.thekeyswitch.api.dto.AuthPayload;
 import com.thekeyswitch.api.service.AuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.graphql.test.tester.GraphQlTester;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -16,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @GraphQlTest(AuthController.class)
+@Import({GraphQlConfig.class, MethodSecurityTestConfig.class})
 class AuthControllerIntegrationTest {
 
     @Autowired

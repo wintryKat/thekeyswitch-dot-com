@@ -1,5 +1,7 @@
 package com.thekeyswitch.api.controller;
 
+import com.thekeyswitch.api.config.GraphQlConfig;
+import com.thekeyswitch.api.config.MethodSecurityTestConfig;
 import com.thekeyswitch.api.dto.EncounterConnection;
 import com.thekeyswitch.api.dto.PageInfo;
 import com.thekeyswitch.api.model.Encounter;
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.graphql.test.tester.GraphQlTester;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -21,6 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @GraphQlTest(EncounterController.class)
+@Import({GraphQlConfig.class, MethodSecurityTestConfig.class})
 class EncounterControllerIntegrationTest {
 
     @Autowired

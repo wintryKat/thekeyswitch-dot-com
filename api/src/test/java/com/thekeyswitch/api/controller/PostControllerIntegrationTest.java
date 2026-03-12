@@ -1,5 +1,7 @@
 package com.thekeyswitch.api.controller;
 
+import com.thekeyswitch.api.config.GraphQlConfig;
+import com.thekeyswitch.api.config.MethodSecurityTestConfig;
 import com.thekeyswitch.api.dto.PageInfo;
 import com.thekeyswitch.api.dto.PostConnection;
 import com.thekeyswitch.api.model.Post;
@@ -24,6 +26,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @GraphQlTest(PostController.class)
+@Import({GraphQlConfig.class, MethodSecurityTestConfig.class})
 class PostControllerIntegrationTest {
 
     @Autowired
@@ -44,9 +47,9 @@ class PostControllerIntegrationTest {
         samplePost.setTitle("Test Post");
         samplePost.setContent("Test content body");
         samplePost.setExcerpt("Test excerpt");
-        samplePost.setAuthorType("human");
+        samplePost.setAuthorType("HUMAN");
         samplePost.setAuthorName("Test Author");
-        samplePost.setStatus("published");
+        samplePost.setStatus("PUBLISHED");
         samplePost.setTags(List.of("java", "testing"));
         samplePost.setReadingTimeMinutes(5);
         samplePost.setCreatedAt(OffsetDateTime.now());
@@ -76,7 +79,7 @@ class PostControllerIntegrationTest {
                 .path("posts.totalCount").entity(Integer.class).isEqualTo(1)
                 .path("posts.nodes[0].title").entity(String.class).isEqualTo("Test Post")
                 .path("posts.nodes[0].slug").entity(String.class).isEqualTo("test-post")
-                .path("posts.nodes[0].status").entity(String.class).isEqualTo("published")
+                .path("posts.nodes[0].status").entity(String.class).isEqualTo("PUBLISHED")
                 .path("posts.pageInfo.hasNextPage").entity(Boolean.class).isEqualTo(false)
                 .path("posts.pageInfo.currentPage").entity(Integer.class).isEqualTo(1);
     }
@@ -210,9 +213,9 @@ class PostControllerIntegrationTest {
         created.setSlug("new-post");
         created.setTitle("New Post");
         created.setContent("Content");
-        created.setAuthorType("human");
+        created.setAuthorType("HUMAN");
         created.setAuthorName("Author");
-        created.setStatus("draft");
+        created.setStatus("DRAFT");
         created.setTags(List.of());
         created.setCreatedAt(OffsetDateTime.now());
         created.setUpdatedAt(OffsetDateTime.now());
@@ -237,7 +240,7 @@ class PostControllerIntegrationTest {
                 .execute()
                 .path("createPost.title").entity(String.class).isEqualTo("New Post")
                 .path("createPost.slug").entity(String.class).isEqualTo("new-post")
-                .path("createPost.status").entity(String.class).isEqualTo("draft");
+                .path("createPost.status").entity(String.class).isEqualTo("DRAFT");
     }
 
     // ── Mutation: updatePost (requires auth) ──────────────────────────────────
