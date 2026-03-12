@@ -15,9 +15,9 @@ public interface EncounterRepository extends JpaRepository<Encounter, UUID> {
 
     Page<Encounter> findByPlatform(String platform, Pageable pageable);
 
-    @Query("SELECT e FROM Encounter e WHERE :tag = ANY(e.tags)")
+    @Query(value = "SELECT * FROM encounters WHERE :tag = ANY(tags)", nativeQuery = true)
     Page<Encounter> findByTagsContaining(@Param("tag") String tag, Pageable pageable);
 
-    @Query("SELECT e FROM Encounter e WHERE e.platform = :platform AND :tag = ANY(e.tags)")
+    @Query(value = "SELECT * FROM encounters WHERE platform = :platform AND :tag = ANY(tags)", nativeQuery = true)
     Page<Encounter> findByPlatformAndTagsContaining(@Param("platform") String platform, @Param("tag") String tag, Pageable pageable);
 }

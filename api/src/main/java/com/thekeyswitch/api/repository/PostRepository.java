@@ -19,10 +19,10 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
 
     Page<Post> findByStatus(String status, Pageable pageable);
 
-    @Query("SELECT p FROM Post p WHERE :tag = ANY(p.tags)")
+    @Query(value = "SELECT * FROM posts WHERE :tag = ANY(tags)", nativeQuery = true)
     Page<Post> findByTagsContaining(@Param("tag") String tag, Pageable pageable);
 
-    @Query("SELECT p FROM Post p WHERE p.status = :status AND :tag = ANY(p.tags)")
+    @Query(value = "SELECT * FROM posts WHERE status = :status AND :tag = ANY(tags)", nativeQuery = true)
     Page<Post> findByStatusAndTagsContaining(@Param("status") String status, @Param("tag") String tag, Pageable pageable);
 
     List<Post> findByAuthorType(String authorType);

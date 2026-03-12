@@ -17,9 +17,8 @@ public interface SwitchRepository extends JpaRepository<Switch, UUID> {
 
     Page<Switch> findByManufacturer(String manufacturer, Pageable pageable);
 
-    @Query("SELECT s FROM Switch s WHERE s.type = :type AND s.manufacturer = :manufacturer")
-    Page<Switch> findByTypeAndManufacturer(@Param("type") String type, @Param("manufacturer") String manufacturer, Pageable pageable);
+    Page<Switch> findByTypeAndManufacturer(String type, String manufacturer, Pageable pageable);
 
-    @Query("SELECT s FROM Switch s WHERE :tag = ANY(s.tags)")
+    @Query(value = "SELECT * FROM switches WHERE :tag = ANY(tags)", nativeQuery = true)
     Page<Switch> findByTagsContaining(@Param("tag") String tag, Pageable pageable);
 }
