@@ -20,15 +20,15 @@ const COMPARE_COLORS = [
 const TYPE_BADGE: Record<string, { label: string; classes: string }> = {
   linear: {
     label: "Linear",
-    classes: "bg-blue-500/10 border-blue-500/25 text-blue-400",
+    classes: "bg-blue-500/10 border-blue-500/25 text-blue-700 dark:text-blue-400",
   },
   tactile: {
     label: "Tactile",
-    classes: "bg-violet-500/10 border-violet-500/25 text-violet-400",
+    classes: "bg-violet-500/10 border-violet-500/25 text-violet-700 dark:text-violet-400",
   },
   clicky: {
     label: "Clicky",
-    classes: "bg-emerald-500/10 border-emerald-500/25 text-emerald-400",
+    classes: "bg-emerald-500/10 border-emerald-500/25 text-emerald-700 dark:text-emerald-400",
   },
 };
 
@@ -41,7 +41,7 @@ export default function SwitchCard({
 }: SwitchCardProps) {
   const typeBadge = TYPE_BADGE[sw.type?.toLowerCase()] ?? {
     label: sw.type || "Unknown",
-    classes: "bg-gray-500/10 border-gray-500/25 text-gray-400",
+    classes: "bg-gray-500/10 border-gray-500/25 text-gray-600 dark:text-gray-400",
   };
 
   const borderClass =

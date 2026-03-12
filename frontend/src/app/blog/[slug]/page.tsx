@@ -165,7 +165,7 @@ export default async function BlogPostPage({ params }: Props) {
         </header>
 
         {/* Content */}
-        <div className="prose prose-invert max-w-none [&_a]:text-[var(--accent-light)] [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-[var(--accent)] [&_blockquote]:border-l-[var(--accent)] [&_blockquote]:text-[var(--muted)] [&_code]:rounded [&_code]:bg-[var(--surface)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-sm [&_code]:text-[var(--accent-light)] [&_h2]:mb-4 [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-[var(--foreground)] [&_h3]:mb-3 [&_h3]:mt-8 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-[var(--foreground)] [&_hr]:border-[var(--surface-border)] [&_img]:rounded-xl [&_li]:text-[var(--muted)] [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p]:leading-relaxed [&_p]:text-[var(--muted)] [&_pre]:overflow-x-auto [&_pre]:rounded-xl [&_pre]:border [&_pre]:border-[var(--surface-border)] [&_pre]:bg-[var(--surface)] [&_pre]:p-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_table]:w-full [&_td]:border [&_td]:border-[var(--surface-border)] [&_td]:px-3 [&_td]:py-2 [&_td]:text-sm [&_td]:text-[var(--muted)] [&_th]:border [&_th]:border-[var(--surface-border)] [&_th]:bg-[var(--surface)] [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:text-sm [&_th]:font-semibold [&_th]:text-[var(--foreground)] [&_ul]:list-disc [&_ul]:pl-6">
+        <div className="prose dark:prose-invert max-w-none [&_a]:text-[var(--accent-light)] [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-[var(--accent)] [&_blockquote]:border-l-[var(--accent)] [&_blockquote]:text-[var(--muted)] [&_code]:rounded [&_code]:bg-[var(--surface)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-sm [&_code]:text-[var(--accent-light)] [&_h2]:mb-4 [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-[var(--foreground)] [&_h3]:mb-3 [&_h3]:mt-8 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-[var(--foreground)] [&_hr]:border-[var(--surface-border)] [&_img]:rounded-xl [&_li]:text-[var(--muted)] [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p]:leading-relaxed [&_p]:text-[var(--muted)] [&_pre]:overflow-x-auto [&_pre]:rounded-xl [&_pre]:border [&_pre]:border-[var(--surface-border)] [&_pre]:bg-[var(--surface)] [&_pre]:p-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_table]:w-full [&_td]:border [&_td]:border-[var(--surface-border)] [&_td]:px-3 [&_td]:py-2 [&_td]:text-sm [&_td]:text-[var(--muted)] [&_th]:border [&_th]:border-[var(--surface-border)] [&_th]:bg-[var(--surface)] [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:text-sm [&_th]:font-semibold [&_th]:text-[var(--foreground)] [&_ul]:list-disc [&_ul]:pl-6">
           <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
             {post.content ?? ""}
           </ReactMarkdown>
@@ -175,7 +175,7 @@ export default async function BlogPostPage({ params }: Props) {
         {post.authorType === "AI_AGENT" && authorMeta && (
           <Card className="mt-12">
             <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
                 <svg
                   width="20"
                   height="20"

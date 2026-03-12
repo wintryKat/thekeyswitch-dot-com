@@ -10,9 +10,9 @@ const variantStyles: Record<string, string> = {
   accent:
     "bg-[var(--accent)]/10 border-[var(--accent)]/20 text-[var(--accent-light)]",
   success:
-    "bg-emerald-500/10 border-emerald-500/20 text-emerald-400",
+    "bg-emerald-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-400",
   warning:
-    "bg-amber-500/10 border-amber-500/20 text-amber-400",
+    "bg-amber-500/10 border-amber-500/20 text-amber-700 dark:text-amber-400",
 };
 
 export default function Badge({

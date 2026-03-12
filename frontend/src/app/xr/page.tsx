@@ -95,7 +95,7 @@ export default function XRPage() {
 
       {/* Controls hint — top right */}
       <div
-        className={`absolute right-4 top-4 z-20 rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-4 py-2.5 text-xs text-[var(--muted)] shadow-lg backdrop-blur-sm transition-opacity duration-700 ${
+        className={`absolute right-3 top-3 z-20 rounded-lg border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 text-xs text-[var(--muted)] shadow-lg backdrop-blur-sm transition-opacity duration-700 sm:right-4 sm:top-4 sm:px-4 sm:py-2.5 ${
           showHint ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
@@ -110,9 +110,9 @@ export default function XRPage() {
       </div>
 
       {/* Bottom overlay with info + links */}
-      <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/80 to-transparent px-4 pb-8 pt-24">
+      <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/80 to-transparent px-4 pb-6 pt-20 sm:pb-8 sm:pt-24">
         <div className="mx-auto max-w-4xl">
-          <h1 className="mb-2 text-3xl font-bold tracking-tight text-[var(--foreground)]">
+          <h1 className="mb-2 text-2xl font-bold tracking-tight text-[var(--foreground)] sm:text-3xl">
             The Mechanical Workshop
           </h1>
           <p className="mb-5 max-w-xl text-sm leading-relaxed text-[var(--muted)]">

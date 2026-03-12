@@ -126,12 +126,12 @@ export default function SwitchExplorer({ initialSwitches }: SwitchExplorerProps)
           </div>
 
           {/* Type filter buttons */}
-          <div className="flex rounded-lg border border-[var(--surface-border)] overflow-hidden">
+          <div className="flex rounded-lg border border-[var(--surface-border)] overflow-hidden overflow-x-auto">
             {TYPE_FILTERS.map((filter) => (
               <button
                 key={filter.value}
                 onClick={() => setTypeFilter(filter.value)}
-                className={`px-3.5 py-2 text-sm font-medium transition-colors ${
+                className={`px-3.5 py-2 text-sm font-medium transition-colors whitespace-nowrap ${
                   typeFilter === filter.value
                     ? "bg-[var(--accent)] text-white"
                     : "bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-border)]/50"

@@ -142,12 +142,12 @@ export default function AdminPage() {
 
       {/* Error state */}
       {error && (
-        <div className="mb-6 rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-400">
+        <div className="mb-6 rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-700 dark:text-red-400">
           <p className="font-medium">Failed to load data</p>
-          <p className="mt-1 text-red-400/80">{error}</p>
+          <p className="mt-1 text-red-600/80 dark:text-red-400/80">{error}</p>
           <button
             onClick={fetchData}
-            className="mt-2 text-xs font-medium underline underline-offset-2 hover:text-red-300"
+            className="mt-2 text-xs font-medium underline underline-offset-2 hover:text-red-500 dark:hover:text-red-300"
           >
             Retry
           </button>
@@ -195,9 +195,9 @@ export default function AdminPage() {
               </p>
               <p className="text-3xl font-bold">
                 {error ? (
-                  <span className="text-red-400">Down</span>
+                  <span className="text-red-600 dark:text-red-400">Down</span>
                 ) : (
-                  <span className="text-emerald-400">Healthy</span>
+                  <span className="text-emerald-600 dark:text-emerald-400">Healthy</span>
                 )}
               </p>
             </Card>
@@ -288,7 +288,7 @@ export default function AdminPage() {
                   <button
                     onClick={() => handleDelete(post.id)}
                     disabled={deletingId === post.id}
-                    className="rounded-md px-2.5 py-1 text-xs font-medium text-red-400 transition-colors hover:bg-red-500/10 disabled:opacity-50"
+                    className="rounded-md px-2.5 py-1 text-xs font-medium text-red-600 dark:text-red-400 transition-colors hover:bg-red-500/10 disabled:opacity-50"
                   >
                     {deletingId === post.id ? "..." : "Delete"}
                   </button>

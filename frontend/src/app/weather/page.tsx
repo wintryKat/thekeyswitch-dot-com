@@ -174,7 +174,7 @@ export default function WeatherPage() {
           Weather Dashboard
         </h1>
         <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6 text-center">
-          <p className="text-red-400">{error}</p>
+          <p className="text-red-700 dark:text-red-400">{error}</p>
         </div>
         <div className="mt-6">
           <SearchBox

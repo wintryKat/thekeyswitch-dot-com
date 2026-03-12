@@ -104,7 +104,7 @@ export default function MetricsPage() {
         <div className="flex items-center gap-2">
           <span
             className={`inline-block h-2.5 w-2.5 rounded-full ${
-              connected ? "bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,.6)]" : "bg-red-500"
+              connected ? "bg-emerald-500 dark:bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,.6)]" : "bg-red-500"
             }`}
           />
           <span className="text-xs font-medium text-[var(--muted)]">
@@ -114,7 +114,7 @@ export default function MetricsPage() {
       </div>
 
       {error && !metrics && (
-        <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+        <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-700 dark:text-red-400">
           Failed to fetch metrics: {error}
         </div>
       )}
@@ -189,7 +189,7 @@ export default function MetricsPage() {
               <span className="mb-1 text-xs font-medium uppercase tracking-wider text-[var(--muted)]">
                 Uptime
               </span>
-              <span className="text-3xl font-bold text-emerald-400">
+              <span className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
                 {formatUptime(metrics.uptimeSeconds)}
               </span>
               <span className="mt-1 text-xs text-[var(--muted)]">
@@ -268,14 +268,14 @@ export default function MetricsPage() {
                             <span className="inline-flex items-center gap-1.5">
                               <span
                                 className={`inline-block h-2 w-2 rounded-full ${
-                                  isRunning ? "bg-emerald-400" : "bg-red-500"
+                                  isRunning ? "bg-emerald-500 dark:bg-emerald-400" : "bg-red-500"
                                 }`}
                               />
                               <span
                                 className={`text-xs font-medium ${
                                   isRunning
-                                    ? "text-emerald-400"
-                                    : "text-red-400"
+                                    ? "text-emerald-600 dark:text-emerald-400"
+                                    : "text-red-600 dark:text-red-400"
                                 }`}
                               >
                                 {c.status}
@@ -295,9 +295,9 @@ export default function MetricsPage() {
                             <span
                               className={`font-mono text-xs font-medium ${
                                 memPct > 80
-                                  ? "text-red-400"
+                                  ? "text-red-600 dark:text-red-400"
                                   : memPct > 60
-                                    ? "text-amber-400"
+                                    ? "text-amber-600 dark:text-amber-400"
                                     : "text-[var(--foreground)]"
                               }`}
                             >

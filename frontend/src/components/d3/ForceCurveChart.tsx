@@ -64,7 +64,8 @@ export default function ForceCurveChart({ switches }: ForceCurveChartProps) {
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
-    const margin = { top: 24, right: 130, bottom: 54, left: 64 };
+    const isNarrow = dimensions.width < 500;
+    const margin = { top: 24, right: isNarrow ? 16 : 130, bottom: isNarrow ? 80 : 54, left: isNarrow ? 48 : 64 };
     const width = dimensions.width - margin.left - margin.right;
     const height = dimensions.height - margin.top - margin.bottom;
 
@@ -265,41 +266,75 @@ export default function ForceCurveChart({ switches }: ForceCurveChartProps) {
     });
 
     // Legend
-    const legend = g
-      .append("g")
-      .attr("transform", `translate(${width + 20}, 0)`);
-
-    switchData.forEach(({ switch: s, color }, i) => {
-      const entry = legend
+    if (isNarrow) {
+      // Horizontal legend below chart on narrow screens
+      const legend = g
         .append("g")
-        .attr("transform", `translate(0, ${i * 28})`);
+        .attr("transform", `translate(0, ${height + 40})`);
 
-      entry
-        .append("line")
-        .attr("x1", 0)
-        .attr("x2", 16)
-        .attr("y1", 6)
-        .attr("y2", 6)
-        .attr("stroke", color)
-        .attr("stroke-width", 2.5)
-        .attr("stroke-linecap", "round");
+      let xOffset = 0;
+      switchData.forEach(({ switch: s, color }) => {
+        const entry = legend
+          .append("g")
+          .attr("transform", `translate(${xOffset}, 0)`);
 
-      entry
-        .append("circle")
-        .attr("cx", 8)
-        .attr("cy", 6)
-        .attr("r", 3)
-        .attr("fill", color);
+        entry
+          .append("circle")
+          .attr("cx", 5)
+          .attr("cy", 6)
+          .attr("r", 4)
+          .attr("fill", color);
 
-      entry
-        .append("text")
-        .attr("x", 22)
-        .attr("y", 10)
-        .style("fill", "var(--foreground)")
-        .style("font-size", "11px")
-        .style("font-weight", "500")
-        .text(s.name.length > 18 ? s.name.slice(0, 18) + "\u2026" : s.name);
-    });
+        const truncatedName = s.name.length > 12 ? s.name.slice(0, 12) + "\u2026" : s.name;
+        entry
+          .append("text")
+          .attr("x", 14)
+          .attr("y", 10)
+          .style("fill", "var(--foreground)")
+          .style("font-size", "10px")
+          .style("font-weight", "500")
+          .text(truncatedName);
+
+        xOffset += truncatedName.length * 6.5 + 24;
+      });
+    } else {
+      // Vertical legend to the right on wider screens
+      const legend = g
+        .append("g")
+        .attr("transform", `translate(${width + 20}, 0)`);
+
+      switchData.forEach(({ switch: s, color }, i) => {
+        const entry = legend
+          .append("g")
+          .attr("transform", `translate(0, ${i * 28})`);
+
+        entry
+          .append("line")
+          .attr("x1", 0)
+          .attr("x2", 16)
+          .attr("y1", 6)
+          .attr("y2", 6)
+          .attr("stroke", color)
+          .attr("stroke-width", 2.5)
+          .attr("stroke-linecap", "round");
+
+        entry
+          .append("circle")
+          .attr("cx", 8)
+          .attr("cy", 6)
+          .attr("r", 3)
+          .attr("fill", color);
+
+        entry
+          .append("text")
+          .attr("x", 22)
+          .attr("y", 10)
+          .style("fill", "var(--foreground)")
+          .style("font-size", "11px")
+          .style("font-weight", "500")
+          .text(s.name.length > 18 ? s.name.slice(0, 18) + "\u2026" : s.name);
+      });
+    }
   }, [switches, dimensions]);
 
   if (switches.length === 0) {

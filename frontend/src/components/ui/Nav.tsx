@@ -98,7 +98,7 @@ export default function Nav() {
                 <Link
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`block rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                  className={`block rounded-md px-3 py-3 text-sm font-medium transition-colors ${
                     isActive(link.href)
                       ? "bg-[var(--accent)]/15 text-[var(--accent-light)]"
                       : "text-[var(--muted)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"

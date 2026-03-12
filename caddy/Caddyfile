@@ -8,6 +8,23 @@
     }
 }
 
+# Redirect all known alternative domains (and their www variants) to canonical
+kat.so, www.kat.so,
+kma.codes, www.kma.codes,
+katx.io, www.katx.io,
+wintrykat.org, www.wintrykat.org,
+kataurelia.com, www.kataurelia.com,
+katherineaurelia.com, www.katherineaurelia.com,
+wintrykat.com, www.wintrykat.com,
+www.thekeyswitch.com {
+    redir https://thekeyswitch.com{uri} permanent
+}
+
+# HTTP catch-all: redirect any plain HTTP request to canonical HTTPS
+:80 {
+    redir https://thekeyswitch.com{uri} permanent
+}
+
 thekeyswitch.com {
     log {
         output file /var/log/caddy/access.log {

@@ -89,14 +89,14 @@ export default function ContactPage() {
 
       {/* Success state */}
       {status.kind === "success" && (
-        <div className="mb-8 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-5 py-4 text-sm text-emerald-300">
+        <div className="mb-8 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-5 py-4 text-sm text-emerald-700 dark:text-emerald-300">
           {status.message}
         </div>
       )}
 
       {/* Error state */}
       {status.kind === "error" && (
-        <div className="mb-8 rounded-lg border border-red-500/30 bg-red-500/10 px-5 py-4 text-sm text-red-300">
+        <div className="mb-8 rounded-lg border border-red-500/30 bg-red-500/10 px-5 py-4 text-sm text-red-700 dark:text-red-300">
           {status.message}
         </div>
       )}
