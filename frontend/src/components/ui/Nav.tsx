@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -53,8 +54,10 @@ export default function Nav() {
           ))}
         </ul>
 
-        {/* Mobile hamburger */}
-        <button
+        {/* Theme toggle + Mobile hamburger */}
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+          <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="flex h-9 w-9 items-center justify-center rounded-md text-[var(--muted)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--foreground)] md:hidden"
           aria-label="Toggle navigation menu"
@@ -83,6 +86,7 @@ export default function Nav() {
             )}
           </svg>
         </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

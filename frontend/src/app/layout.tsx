@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Nav from "@/components/ui/Nav";
 import Footer from "@/components/ui/Footer";
+import ThemeProvider from "@/components/ui/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "The Key Switch | Portfolio & Engineering Showcase",
@@ -25,11 +26,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark')}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body className="flex min-h-screen flex-col">
-        <Nav />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <ThemeProvider>
+          <Nav />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

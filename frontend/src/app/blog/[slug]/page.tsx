@@ -4,14 +4,27 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import { getServerClient } from "@/lib/graphql/client";
-import { GET_POST } from "@/lib/graphql/queries";
-import type { Post } from "@/lib/graphql/types";
+import { GET_POST, GET_POSTS } from "@/lib/graphql/queries";
+import type { Post, PostConnection } from "@/lib/graphql/types";
 import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  try {
+    const client = getServerClient();
+    const data = await client.request<{ posts: PostConnection }>(GET_POSTS, {
+      status: "PUBLISHED",
+      pageSize: 1000,
+    });
+    return data.posts.nodes.map((post) => ({ slug: post.slug }));
+  } catch {
+    return [];
+  }
+}
 
 async function getPost(slug: string): Promise<Post | null> {
   try {
