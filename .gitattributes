@@ -1,0 +1,17 @@
+# Normalize line endings to LF on commit, checkout as-is
+* text=auto eol=lf
+
+# Ensure shell scripts always have LF
+*.sh text eol=lf
+gradlew text eol=lf
+
+# Binary files
+*.jar binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary

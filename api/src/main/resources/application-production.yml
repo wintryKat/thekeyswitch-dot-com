@@ -1,0 +1,13 @@
+spring:
+  graphql:
+    graphiql:
+      enabled: false
+
+management:
+  endpoint:
+    health:
+      show-details: never
+
+server:
+  error:
+    include-stacktrace: never

@@ -1,0 +1,34 @@
+# Development overrides — use with:
+# docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+
+services:
+  caddy:
+    volumes:
+      - ./caddy/Caddyfile.dev:/etc/caddy/Caddyfile:ro
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    environment:
+      NEXT_PUBLIC_GRAPHQL_URL: http://localhost/graphql
+      GRAPHQL_INTERNAL_URL: http://api:8080/graphql
+    ports:
+      - "3000:3000"
+
+  api:
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+    ports:
+      - "8080:8080"
+
+  db:
+    ports:
+      - "5432:5432"
+
+  prometheus:
+    ports:
+      - "9090:9090"

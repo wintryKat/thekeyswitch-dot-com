@@ -1,0 +1,256 @@
+scalar JSON
+scalar DateTime
+scalar Long
+
+type Query {
+    # Portfolio / Profile
+    siteConfig(key: String!): SiteConfig
+    allSiteConfig: [SiteConfig!]!
+
+    # Blog
+    posts(status: PostStatus, tag: String, page: Int, pageSize: Int): PostConnection!
+    post(slug: String!): Post
+    postsByAuthorType(authorType: AuthorType!): [Post!]!
+
+    # Keyboard switches
+    switches(type: SwitchType, manufacturer: String, page: Int, pageSize: Int): SwitchConnection!
+    switch(id: ID!): Switch
+    compareSwitches(ids: [ID!]!): [Switch!]!
+
+    # Encounters
+    encounters(tag: String, platform: String, page: Int, pageSize: Int): EncounterConnection!
+    encounter(id: ID!): Encounter
+
+    # System metrics (proxied from Prometheus)
+    systemMetrics: SystemMetrics!
+}
+
+type Mutation {
+    # Auth
+    login(username: String!, password: String!): AuthPayload!
+    refreshToken(token: String!): AuthPayload!
+
+    # Blog (authenticated)
+    createPost(input: CreatePostInput!): Post!
+    updatePost(id: ID!, input: UpdatePostInput!): Post!
+    deletePost(id: ID!): Boolean!
+
+    # Switches (authenticated)
+    createSwitch(input: CreateSwitchInput!): Switch!
+    updateSwitch(id: ID!, input: UpdateSwitchInput!): Switch!
+    deleteSwitch(id: ID!): Boolean!
+
+    # Encounters (authenticated)
+    importEncounter(input: ImportEncounterInput!): Encounter!
+
+    # Site config (authenticated)
+    updateSiteConfig(key: String!, value: JSON!): SiteConfig!
+}
+
+type Subscription {
+    systemMetricsUpdated: SystemMetrics!
+}
+
+# ─── Content Types ───────────────────────────────────────────────────────────
+
+type Post {
+    id: ID!
+    slug: String!
+    title: String!
+    content: String!
+    excerpt: String
+    authorType: AuthorType!
+    authorName: String!
+    authorMeta: JSON
+    status: PostStatus!
+    tags: [String!]!
+    readingTimeMinutes: Int
+    publishedAt: DateTime
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type Switch {
+    id: ID!
+    name: String!
+    manufacturer: String!
+    type: SwitchType!
+    actuationForceGf: Float
+    bottomOutForceGf: Float
+    preTravelMm: Float
+    totalTravelMm: Float
+    forceCurve: JSON
+    soundProfile: String
+    soundSampleUrl: String
+    springType: String
+    stemMaterial: String
+    housingMaterial: String
+    priceUsd: Float
+    imageUrl: String
+    sourceUrl: String
+    tags: [String!]!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type SiteConfig {
+    key: String!
+    value: JSON!
+    updatedAt: DateTime!
+}
+
+type Encounter {
+    id: ID!
+    filename: String!
+    platform: String!
+    title: String!
+    abstract: String
+    tags: [String!]!
+    content: String!
+    frontMatter: JSON
+    sessionDate: DateTime
+    createdAt: DateTime!
+}
+
+type AuthPayload {
+    token: String!
+    expiresAt: DateTime!
+}
+
+type SystemMetrics {
+    cpuUsagePercent: Float!
+    memoryUsedBytes: Long!
+    memoryTotalBytes: Long!
+    diskUsedBytes: Long!
+    diskTotalBytes: Long!
+    uptimeSeconds: Long!
+    loadAverage1m: Float!
+    loadAverage5m: Float!
+    loadAverage15m: Float!
+    networkRxBytesPerSec: Float!
+    networkTxBytesPerSec: Float!
+    containerMetrics: [ContainerMetric!]!
+    timestamp: DateTime!
+}
+
+type ContainerMetric {
+    name: String!
+    cpuPercent: Float!
+    memoryUsedBytes: Long!
+    memoryLimitBytes: Long!
+    status: String!
+}
+
+# ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum PostStatus { DRAFT, PUBLISHED, ARCHIVED }
+enum AuthorType { HUMAN, AI_AGENT }
+enum SwitchType { LINEAR, TACTILE, CLICKY }
+
+# ─── Pagination Types ────────────────────────────────────────────────────────
+
+type PostConnection {
+    nodes: [Post!]!
+    totalCount: Int!
+    pageInfo: PageInfo!
+}
+
+type SwitchConnection {
+    nodes: [Switch!]!
+    totalCount: Int!
+    pageInfo: PageInfo!
+}
+
+type EncounterConnection {
+    nodes: [Encounter!]!
+    totalCount: Int!
+    pageInfo: PageInfo!
+}
+
+type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    currentPage: Int!
+    totalPages: Int!
+}
+
+# ─── Input Types ─────────────────────────────────────────────────────────────
+
+input CreatePostInput {
+    slug: String!
+    title: String!
+    content: String!
+    excerpt: String
+    authorType: AuthorType!
+    authorName: String!
+    authorMeta: JSON
+    status: PostStatus
+    tags: [String!]
+    readingTimeMinutes: Int
+    publishedAt: DateTime
+}
+
+input UpdatePostInput {
+    slug: String
+    title: String
+    content: String
+    excerpt: String
+    authorType: AuthorType
+    authorName: String
+    authorMeta: JSON
+    status: PostStatus
+    tags: [String!]
+    readingTimeMinutes: Int
+    publishedAt: DateTime
+}
+
+input CreateSwitchInput {
+    name: String!
+    manufacturer: String!
+    type: SwitchType!
+    actuationForceGf: Float
+    bottomOutForceGf: Float
+    preTravelMm: Float
+    totalTravelMm: Float
+    forceCurve: JSON
+    soundProfile: String
+    soundSampleUrl: String
+    springType: String
+    stemMaterial: String
+    housingMaterial: String
+    priceUsd: Float
+    imageUrl: String
+    sourceUrl: String
+    tags: [String!]
+}
+
+input UpdateSwitchInput {
+    name: String
+    manufacturer: String
+    type: SwitchType
+    actuationForceGf: Float
+    bottomOutForceGf: Float
+    preTravelMm: Float
+    totalTravelMm: Float
+    forceCurve: JSON
+    soundProfile: String
+    soundSampleUrl: String
+    springType: String
+    stemMaterial: String
+    housingMaterial: String
+    priceUsd: Float
+    imageUrl: String
+    sourceUrl: String
+    tags: [String!]
+}
+
+input ImportEncounterInput {
+    filename: String!
+    platform: String!
+    title: String!
+    abstract: String
+    tags: [String!]
+    content: String!
+    frontMatter: JSON
+    sessionDate: DateTime
+}

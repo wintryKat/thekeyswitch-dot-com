@@ -1,0 +1,50 @@
+{
+    email kat@thekeyswitch.com
+    order crowdsec first
+    crowdsec {
+        api_url http://crowdsec:8080
+        api_key {$CROWDSEC_API_KEY}
+        ticker_interval 15s
+    }
+}
+
+thekeyswitch.com {
+    log {
+        output file /var/log/caddy/access.log {
+            roll_size 100mb
+            roll_keep 5
+        }
+        format json
+    }
+
+    route {
+        crowdsec
+
+        # API proxy
+        handle /graphql* {
+            reverse_proxy api:8080
+        }
+
+        # Actuator health (internal only)
+        handle /actuator/health {
+            @internal remote_ip 172.16.0.0/12 192.168.0.0/16 10.0.0.0/8
+            reverse_proxy @internal api:8080
+            respond 403
+        }
+
+        # Next.js application
+        handle {
+            reverse_proxy frontend:3000
+        }
+    }
+
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        Referrer-Policy strict-origin-when-cross-origin
+        Permissions-Policy "camera=(), microphone=(), geolocation=(self)"
+        Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://api.open-meteo.com wss://thekeyswitch.com; frame-src 'self'"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        -Server
+    }
+}
