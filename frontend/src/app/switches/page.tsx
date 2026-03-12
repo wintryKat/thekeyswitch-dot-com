@@ -1,70 +1,68 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import { getServerClient } from "@/lib/graphql/client";
+import { GET_SWITCHES } from "@/lib/graphql/queries";
+import type { KeySwitch, SwitchConnection } from "@/lib/graphql/types";
+import SwitchExplorer from "@/components/switches/SwitchExplorer";
 
 export const metadata: Metadata = {
   title: "Keyboard Switch Comparison | The Key Switch",
   description:
-    "Interactive force-curve visualizations and comparison tool for mechanical keyboard switches.",
+    "Interactive force-curve visualizations and comparison tool for mechanical keyboard switches. Compare actuation force, travel distance, and spring characteristics.",
 };
 
-export default function SwitchesPage() {
+async function fetchSwitches(): Promise<KeySwitch[]> {
+  try {
+    const client = getServerClient();
+    const data = await client.request<{ switches: SwitchConnection }>(
+      GET_SWITCHES,
+      { pageSize: 200 }
+    );
+    return data.switches.nodes;
+  } catch (error) {
+    console.error("Failed to fetch switches:", error);
+    return [];
+  }
+}
+
+export default async function SwitchesPage() {
+  const switches = await fetchSwitches();
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
-      <h1 className="mb-3 text-4xl font-extrabold tracking-tight text-[var(--foreground)]">
-        Keyboard Switch Comparison Tool
-      </h1>
-      <p className="mb-10 max-w-2xl text-[var(--muted)] leading-relaxed">
-        Compare mechanical keyboard switches side-by-side with interactive D3.js
-        force-curve visualizations. Filter by type, actuation force, travel
-        distance, and more.
-      </p>
-
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] p-6">
-          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-red-500/10 text-red-400">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-              <path d="M10 3v14M3 10l7-7 7 7" />
-            </svg>
-          </div>
-          <h2 className="mb-2 font-semibold text-[var(--foreground)]">Linear</h2>
-          <p className="text-sm text-[var(--muted)]">
-            Smooth keystroke with no tactile bump. Popular for gaming.
-          </p>
-        </div>
-        <div className="rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] p-6">
-          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-              <path d="M3 14l4-4 3 3 7-7" />
-            </svg>
-          </div>
-          <h2 className="mb-2 font-semibold text-[var(--foreground)]">Tactile</h2>
-          <p className="text-sm text-[var(--muted)]">
-            Noticeable bump at actuation point. Great for typing accuracy.
-          </p>
-        </div>
-        <div className="rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] p-6">
-          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-              <circle cx="10" cy="10" r="3" />
-              <path d="M10 3v2M10 15v2M3 10h2M15 10h2" />
-            </svg>
-          </div>
-          <h2 className="mb-2 font-semibold text-[var(--foreground)]">Clicky</h2>
-          <p className="text-sm text-[var(--muted)]">
-            Tactile bump with an audible click sound. The classic mechanical feel.
-          </p>
-        </div>
-      </div>
-
-      <div className="mt-12 rounded-xl border border-dashed border-[var(--surface-border)] bg-[var(--surface)]/50 p-12 text-center">
-        <div className="mb-3 text-4xl">📈</div>
-        <h2 className="mb-2 text-lg font-semibold text-[var(--foreground)]">
-          Force Curve Visualization
-        </h2>
-        <p className="text-sm text-[var(--muted)]">
-          Interactive D3.js force-displacement charts will render here. Select
-          switches above to compare their actuation profiles in real time.
+    <div className="mx-auto max-w-7xl px-4 py-16 md:py-24">
+      <div className="mb-10">
+        <h1 className="mb-3 text-4xl font-extrabold tracking-tight text-[var(--foreground)]">
+          Keyboard Switch Comparison Tool
+        </h1>
+        <p className="max-w-2xl text-[var(--muted)] leading-relaxed">
+          Compare mechanical keyboard switches side-by-side with interactive
+          force-curve visualizations. Filter by type, search by name or
+          manufacturer, and select up to 4 switches to compare.
         </p>
       </div>
+
+      <Suspense
+        fallback={
+          <div className="space-y-6">
+            {/* Filter skeleton */}
+            <div className="flex gap-3">
+              <div className="h-10 w-64 animate-pulse rounded-lg bg-[var(--surface)]" />
+              <div className="h-10 w-80 animate-pulse rounded-lg bg-[var(--surface)]" />
+            </div>
+            {/* Card grid skeleton */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-48 animate-pulse rounded-xl bg-[var(--surface)]"
+                />
+              ))}
+            </div>
+          </div>
+        }
+      >
+        <SwitchExplorer initialSwitches={switches} />
+      </Suspense>
     </div>
   );
 }
