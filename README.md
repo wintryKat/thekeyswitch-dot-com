@@ -1,8 +1,5 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/thekeyswitch-logo-dark.svg">
-    <img src="docs/assets/thekeyswitch-logo-light.svg" alt="The Key Switch" width="780">
-  </picture>
+  <img src="frontend/public/logo.svg" alt="The Key Switch" width="120">
 </p>
 
 <p align="center">
