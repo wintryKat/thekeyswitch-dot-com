@@ -5,18 +5,44 @@ import Footer from "@/components/ui/Footer";
 import ThemeProvider from "@/components/ui/ThemeProvider";
 
 export const metadata: Metadata = {
-  title: "The Key Switch | Portfolio & Engineering Showcase",
+  title: "Kat Aurelia | Senior Software Engineer",
   description:
-    "Senior web engineering portfolio featuring full-stack projects, a mechanical keyboard switch comparison tool, weather dashboards, WebXR experiments, and technical blog posts.",
+    "Portfolio of Kat Aurelia — senior software engineer. Full-stack projects, mechanical keyboard tools, WebXR experiments, and technical writing.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://thekeyswitch.com"
   ),
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-192x192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: { url: "/apple-touch-icon.png", sizes: "180x180" },
+  },
+  manifest: "/site.webmanifest",
   openGraph: {
-    title: "The Key Switch | Portfolio & Engineering Showcase",
+    title: "Kat Aurelia | Senior Software Engineer",
     description:
-      "Senior web engineering portfolio featuring full-stack projects and technical deep-dives.",
+      "Portfolio of Kat Aurelia — senior software engineer building full-stack projects and technical deep-dives.",
     siteName: "The Key Switch",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "The Key Switch — Kat Aurelia",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kat Aurelia | Senior Software Engineer",
+    description:
+      "Portfolio of Kat Aurelia — senior software engineer building full-stack projects and technical deep-dives.",
+    images: ["/og-image.png"],
   },
 };
 

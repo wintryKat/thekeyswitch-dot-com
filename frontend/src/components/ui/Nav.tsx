@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import ThemeToggle from "./ThemeToggle";
@@ -31,8 +32,9 @@ export default function Nav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link
           href="/"
-          className="text-lg font-bold tracking-tight text-[var(--accent-light)] transition-colors hover:text-[var(--accent)]"
+          className="flex items-center gap-2 text-lg font-bold tracking-tight text-[var(--accent-light)] transition-colors hover:text-[var(--accent)]"
         >
+          <Image src="/favicon.svg" alt="" width={24} height={24} aria-hidden="true" />
           The Key Switch
         </Link>
 
