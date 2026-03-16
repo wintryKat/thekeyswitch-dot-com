@@ -1,7 +1,7 @@
 import { GraphQLClient } from "graphql-request";
 
 const INTERNAL_URL = process.env.GRAPHQL_INTERNAL_URL || "http://localhost:8080/graphql";
-const PUBLIC_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL || "http://localhost/graphql";
+const PUBLIC_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL || "/graphql";
 
 export function getServerClient(token?: string): GraphQLClient {
   const headers: Record<string, string> = {

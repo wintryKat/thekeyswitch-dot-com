@@ -94,22 +94,24 @@ const skills = [
 ];
 
 function SkillsTicker() {
+  // Render the list three times to guarantee seamless wrapping
+  const repeated = [...skills, ...skills, ...skills];
   return (
     <div
-      className="flex items-center gap-3 text-sm font-medium text-[var(--muted)]"
+      className="flex items-center overflow-hidden text-sm font-medium text-[var(--muted)]"
       aria-label="Technical skills"
       role="marquee"
     >
-      <div className="skills-ticker-track flex gap-3">
-        {[...skills, ...skills].map((skill, i) => (
-          <span key={`${skill}-${i < skills.length ? "a" : "b"}`} className="flex shrink-0 items-center gap-3">
+      <div className="skills-ticker-track flex shrink-0 gap-3" aria-hidden="true">
+        {repeated.map((skill, i) => (
+          <span key={`s-${i}`} className="flex shrink-0 items-center gap-3">
             <span className="text-[var(--accent-warm)]">{skill}</span>
-            <span aria-hidden="true" className="text-[var(--surface-border)]">
-              &middot;
-            </span>
+            <span className="text-[var(--surface-border)]">&middot;</span>
           </span>
         ))}
       </div>
+      {/* Visually hidden accessible text */}
+      <span className="sr-only">{skills.join(", ")}</span>
     </div>
   );
 }
@@ -151,7 +153,7 @@ export default function HomePage() {
         <div className="hero-fade-in mb-8">
           <Image
             src="/logo.svg"
-            alt="The Key Switch logo — a mechanical switch stem rising like a witch's hat with a crescent moon"
+            alt="The Key Switch logo — a mechanical keyboard keycap with switch stem and spring"
             width={120}
             height={120}
             priority

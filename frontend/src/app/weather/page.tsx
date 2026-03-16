@@ -56,11 +56,11 @@ export default function WeatherPage() {
   const refreshRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   /* load weather for coords */
-  const loadWeather = useCallback(async (lat: number, lon: number) => {
+  const loadWeather = useCallback(async (lat: number, lon: number, locationHint?: string) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await fetchWeather(lat, lon);
+      const data = await fetchWeather(lat, lon, locationHint);
       setWeather(data);
     } catch {
       setError("Failed to fetch weather data. Please try again.");
@@ -78,7 +78,7 @@ export default function WeatherPage() {
     }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        loadWeather(pos.coords.latitude, pos.coords.longitude);
+        loadWeather(pos.coords.latitude, pos.coords.longitude, "Your Location");
       },
       () => {
         setGeoBlocked(true);
@@ -127,7 +127,7 @@ export default function WeatherPage() {
     setSearchQuery("");
     setSearchResults([]);
     setGeoBlocked(false);
-    loadWeather(city.lat, city.lon);
+    loadWeather(city.lat, city.lon, `${city.name}, ${city.country}`);
   };
 
   /* ---------- render ---------- */

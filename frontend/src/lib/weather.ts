@@ -31,7 +31,8 @@ export interface WeatherData {
 
 export async function fetchWeather(
   lat: number,
-  lon: number
+  lon: number,
+  locationHint?: string
 ): Promise<WeatherData> {
   const params = new URLSearchParams({
     latitude: lat.toString(),
@@ -50,13 +51,9 @@ export async function fetchWeather(
   if (!response.ok) throw new Error("Failed to fetch weather data");
   const data = await response.json();
 
-  // Reverse geocode for location name
-  const geoResponse = await fetch(
-    `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&count=1`
-  );
-  const geoData = geoResponse.ok ? await geoResponse.json() : { results: [] };
+  // Location name — prefer the optional name parameter, fall back to coords
   const locationName =
-    geoData.results?.[0]?.name || `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+    locationHint || `${lat.toFixed(2)}°, ${lon.toFixed(2)}°`;
 
   return {
     current: {
