@@ -210,8 +210,8 @@ export default async function ResumePage() {
           </p>
         </div>
         <a
-          href="/api/resume.pdf"
-          className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[var(--accent)]/25 transition-all hover:bg-[var(--accent-light)] hover:shadow-[var(--accent)]/40"
+          href="mailto:jobs@thekeyswitch.com?subject=Resume%20Request"
+          className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[var(--accent)]/25 transition-all hover:bg-[var(--accent-light)] hover:shadow-[var(--accent)]/40 hover:-translate-y-0.5"
         >
           <svg
             {...decorativeIconProps}
@@ -228,12 +228,12 @@ export default async function ResumePage() {
             <polyline points="7 10 12 15 17 10" />
             <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
-          Download PDF
+          Request Resume
         </a>
       </div>
 
       {/* Experience Timeline */}
-      <section className="mb-16">
+      <section className="mb-16 reveal">
         <h2 className="mb-8 text-2xl font-bold text-[var(--foreground)]">
           Experience
         </h2>
@@ -273,12 +273,12 @@ export default async function ResumePage() {
 
       {/* Skills */}
       <section className="mb-16">
-        <h2 className="mb-8 text-2xl font-bold text-[var(--foreground)]">
+        <h2 className="mb-8 text-2xl font-bold text-[var(--foreground)] reveal">
           Skills
         </h2>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 reveal-stagger">
           {skills.map((group) => (
-            <Card key={group.category}>
+            <Card key={group.category} className="reveal">
               <h3 className="mb-4 text-lg font-semibold text-[var(--foreground)]">
                 {group.category}
               </h3>
@@ -306,7 +306,7 @@ export default async function ResumePage() {
       </section>
 
       {/* Education */}
-      <section className="mb-16">
+      <section className="mb-16 reveal">
         <h2 className="mb-8 text-2xl font-bold text-[var(--foreground)]">
           Education
         </h2>
@@ -333,15 +333,15 @@ export default async function ResumePage() {
 
       {/* Projects */}
       <section className="mb-16">
-        <h2 className="mb-8 text-2xl font-bold text-[var(--foreground)]">
+        <h2 className="mb-8 text-2xl font-bold text-[var(--foreground)] reveal">
           Featured Projects
         </h2>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 reveal-stagger">
           {projects.map((project) => (
             <Link
               key={project.name}
               href={project.href}
-              className="group rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] p-6 transition-all hover:border-[var(--accent)]/40 hover:bg-[var(--accent)]/5 hover:shadow-lg hover:shadow-[var(--accent)]/5"
+              className="card-hover group reveal rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] p-6 hover:border-[var(--accent)]/40 hover:shadow-lg hover:shadow-[var(--accent)]/5"
             >
               <h3 className="mb-2 text-lg font-semibold text-[var(--foreground)]">
                 {project.name}

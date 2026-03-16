@@ -156,12 +156,12 @@ export default async function AboutPage() {
 
       {/* Skills Grid */}
       <section className="pb-24">
-        <h2 className="mb-8 text-center text-2xl font-bold tracking-tight text-[var(--foreground)]">
+        <h2 className="mb-8 text-center text-2xl font-bold tracking-tight text-[var(--foreground)] reveal">
           Technical Skills
         </h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 reveal-stagger">
           {skills.map((category) => (
-            <Card key={category.name}>
+            <Card key={category.name} className="reveal card-hover">
               <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-[var(--foreground)]">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent)]/10 text-sm text-[var(--accent-light)]">
                   {category.icon === "code" && (
@@ -198,7 +198,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Philosophy */}
-      <section className="pb-24">
+      <section className="pb-24 reveal">
         <Card className="mx-auto max-w-3xl">
           <h2 className="mb-4 text-xl font-bold text-[var(--foreground)]">
             Engineering Philosophy

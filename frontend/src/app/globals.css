@@ -2,6 +2,21 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ===== Inter Font ===== */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("https://fonts.gstatic.com/s/inter/v18/UcCo3FwrK3iLTcviYwY.woff2")
+    format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ===== Design Tokens ===== */
+
 :root {
   --foreground: #1a1523;
   --background: #fefcff;
@@ -11,6 +26,7 @@
   --surface: #f5f0fa;
   --surface-border: #e8ddf0;
   --muted: #6b6078;
+  --focus-ring: #7c3aed;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,6 +39,7 @@
     --surface: #1a1523;
     --surface-border: #2d2640;
     --muted: #9f95ab;
+    --focus-ring: #a78bfa;
   }
 }
 
@@ -35,12 +52,15 @@
   --surface: #1a1523;
   --surface-border: #2d2640;
   --muted: #9f95ab;
+  --focus-ring: #a78bfa;
 }
+
+/* ===== Base Styles ===== */
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -55,7 +75,43 @@ a {
   text-decoration: none;
 }
 
-/* Hero animations */
+/* ===== Skip Navigation (Accessibility) ===== */
+
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0 0 0.5rem 0.5rem;
+  transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+  top: 0;
+  outline: none;
+}
+
+/* ===== Focus Visible (Accessibility) ===== */
+
+*:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove outline when using mouse */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ===== Hero Animations ===== */
+
 .hero-name-animate {
   animation: heroNameIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -89,7 +145,8 @@ a {
   }
 }
 
-/* Skills ticker — seamless horizontal scroll */
+/* ===== Skills Ticker ===== */
+
 .skills-ticker-track {
   animation: tickerScroll 20s linear infinite;
   width: max-content;
@@ -104,13 +161,15 @@ a {
   }
 }
 
-/* Scroll indicator bounce */
+/* ===== Scroll Indicator ===== */
+
 .scroll-bounce {
   animation: scrollBounce 2s ease-in-out infinite;
 }
 
 @keyframes scrollBounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -118,7 +177,95 @@ a {
   }
 }
 
-/* Respect reduced motion */
+/* ===== Scroll Reveal ===== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+.reveal-stagger > .reveal:nth-child(1) {
+  transition-delay: 0s;
+}
+.reveal-stagger > .reveal:nth-child(2) {
+  transition-delay: 0.08s;
+}
+.reveal-stagger > .reveal:nth-child(3) {
+  transition-delay: 0.16s;
+}
+.reveal-stagger > .reveal:nth-child(4) {
+  transition-delay: 0.24s;
+}
+.reveal-stagger > .reveal:nth-child(5) {
+  transition-delay: 0.32s;
+}
+.reveal-stagger > .reveal:nth-child(6) {
+  transition-delay: 0.4s;
+}
+
+/* ===== Gradient glow for accent elements ===== */
+
+.glow-accent {
+  box-shadow: 0 0 40px -10px var(--accent);
+}
+
+/* ===== Smooth gradient line separator ===== */
+
+.gradient-line {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent) 50%,
+    transparent 100%
+  );
+  opacity: 0.3;
+}
+
+/* ===== Card hover lift ===== */
+
+.card-hover {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+}
+
+/* ===== Shimmer loading effect ===== */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface) 25%,
+    var(--surface-border) 50%,
+    var(--surface) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ===== Respect Reduced Motion ===== */
+
 @media (prefers-reduced-motion: reduce) {
   .hero-name-animate,
   .hero-fade-in {
@@ -133,6 +280,20 @@ a {
   }
 
   .scroll-bounce {
+    animation: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .card-hover:hover {
+    transform: none;
+  }
+
+  .shimmer {
     animation: none;
   }
 }

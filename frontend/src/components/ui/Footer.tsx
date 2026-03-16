@@ -2,7 +2,8 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-auto border-t border-[var(--surface-border)] bg-[var(--background)]">
+    <footer className="mt-auto bg-[var(--background)]" aria-label="Site footer">
+      <div className="gradient-line" />
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 py-8 text-center text-sm text-[var(--muted)] sm:flex-row sm:justify-between sm:text-left">
         <p>&copy; {year} The Key Switch. All rights reserved.</p>
         <p className="flex items-center gap-2">
