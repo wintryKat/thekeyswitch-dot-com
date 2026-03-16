@@ -42,13 +42,15 @@ describe('Nav', () => {
 
   it('mobile menu toggles open and close', async () => {
     render(<Nav />);
-    const hamburger = screen.getByRole('button', { name: /toggle navigation menu/i });
+    const hamburger = screen.getByRole('button', { name: /open navigation menu/i });
     expect(hamburger).toHaveAttribute('aria-expanded', 'false');
 
     await userEvent.click(hamburger);
     expect(hamburger).toHaveAttribute('aria-expanded', 'true');
+    expect(hamburger).toHaveAccessibleName(/close navigation menu/i);
 
     await userEvent.click(hamburger);
     expect(hamburger).toHaveAttribute('aria-expanded', 'false');
+    expect(hamburger).toHaveAccessibleName(/open navigation menu/i);
   });
 });
