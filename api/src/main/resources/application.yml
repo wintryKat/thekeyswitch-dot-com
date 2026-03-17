@@ -43,3 +43,10 @@ admin:
 
 security:
   internal-allowed-networks: ${INTERNAL_ALLOWED_NETWORKS:127.0.0.1/32,::1/128,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16}
+
+azure:
+  storage:
+    connection-string: ${AZURE_STORAGE_CONNECTION_STRING:}
+    container: ${AZURE_STORAGE_CONTAINER:switch-assets}
+  cdn:
+    endpoint: ${AZURE_CDN_ENDPOINT:}

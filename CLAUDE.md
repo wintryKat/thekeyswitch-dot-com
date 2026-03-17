@@ -6,12 +6,19 @@ Portfolio site at thekeyswitch.com. Monorepo with Spring Boot GraphQL API, Next.
 
 ## Architecture
 
-See `ARCHITECTURE.md` for the full specification.
+See `docs/architecture/ARCHITECTURE.md` for the full specification.
 
 - **Frontend:** Next.js 15 (App Router), TypeScript, Tailwind CSS 4, graphql-request
 - **API:** Spring Boot 3.x, Java 21, Spring for GraphQL, Spring Data JPA, Flyway
 - **Database:** PostgreSQL 16
 - **Infrastructure:** Docker Compose, Caddy (reverse proxy + TLS), CrowdSec (WAF), Prometheus + exporters
+
+## Documentation
+
+All project docs live in `docs/`:
+- `docs/architecture/` — ARCHITECTURE.md, SPECIFICATIONS.md, AUDIT.md
+- `docs/operations/` — DEPLOY.md, DOCKER_HUB_INTEGRATION.md
+- `docs/plans/` — Dated implementation plans
 
 ## Repo Structure
 
@@ -23,6 +30,7 @@ crowdsec/    — CrowdSec log acquisition config
 prometheus/  — Prometheus scrape config
 db/          — Database init scripts (beyond Flyway)
 scripts/     — VPS setup and deployment scripts
+docs/        — Project documentation (architecture, operations, plans)
 ```
 
 ## Key Conventions
@@ -43,7 +51,8 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 
 ### Deploy to VPS
 ```bash
-ssh thekeyswitch "cd /opt/thekeyswitch && git pull origin main && docker compose build --parallel && docker compose up -d"
+# Push to main triggers GitHub Actions: test → build/push Docker Hub → deploy via SSH pull
+git push origin main
 ```
 
 ### API Tests

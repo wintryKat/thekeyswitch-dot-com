@@ -50,7 +50,7 @@ git commit -m "chore: add gitignore, env template, and agent conventions"
 
 **Step 1: Create docker-compose.yml with all 8 services**
 
-Per ARCHITECTURE.md Section 3 service map. Services: caddy, frontend, api, db, crowdsec, prometheus, node-exporter, cadvisor.
+Per ../architecture/ARCHITECTURE.md Section 3 service map. Services: caddy, frontend, api, db, crowdsec, prometheus, node-exporter, cadvisor.
 
 **Step 2: Create docker-compose.dev.yml**
 
@@ -58,11 +58,11 @@ Development overrides: exposed ports, volume mounts for hot reload, relaxed reso
 
 **Step 3: Create Caddy Dockerfile (xcaddy + CrowdSec bouncer)**
 
-Per ARCHITECTURE.md Section 4.
+Per ../architecture/ARCHITECTURE.md Section 4.
 
 **Step 4: Create Caddyfile**
 
-Per ARCHITECTURE.md Section 3 with security headers, CrowdSec integration, reverse proxy routes.
+Per ../architecture/ARCHITECTURE.md Section 3 with security headers, CrowdSec integration, reverse proxy routes.
 
 **Step 5: Create CrowdSec acquis.yaml**
 
@@ -170,11 +170,11 @@ git commit -m "feat: scaffold Next.js 15 frontend with Tailwind CSS"
 
 **Step 1: Create GitHub Actions workflow**
 
-Per ARCHITECTURE.md Section 16.
+Per ../architecture/ARCHITECTURE.md Section 16.
 
 **Step 2: Create VPS setup script**
 
-Per ARCHITECTURE.md Section 21 (already run, but kept for documentation).
+Per ../architecture/ARCHITECTURE.md Section 21 (already run, but kept for documentation).
 
 **Step 3: Create deploy script**
 

@@ -46,6 +46,9 @@ type Mutation {
 
     # Site config (authenticated)
     updateSiteConfig(key: String!, value: JSON!): SiteConfig!
+
+    # Asset upload (authenticated)
+    requestUploadUrl(filename: String!, contentType: String!): UploadUrlPayload!
 }
 
 type Subscription {
@@ -254,4 +257,11 @@ input ImportEncounterInput {
     content: String!
     frontMatter: JSON
     sessionDate: DateTime
+}
+
+# ─── Asset Upload ────────────────────────────────────────────────────────────
+
+type UploadUrlPayload {
+    uploadUrl: String!
+    cdnUrl: String!
 }

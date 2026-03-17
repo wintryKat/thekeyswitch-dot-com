@@ -1,0 +1,11 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "ACS_CONNECTION_STRING": "endpoint=https://YOUR_ACS_RESOURCE.communication.azure.com/;accesskey=YOUR_KEY",
+    "SENDER_ADDRESS": "DoNotReply@YOUR_ACS_DOMAIN.azurecomm.net",
+    "RECIPIENT_ADDRESS": "kat@thekeyswitch.com",
+    "ALLOWED_ORIGINS": "https://thekeyswitch.com"
+  }
+}

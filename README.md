@@ -9,11 +9,7 @@
 <p align="center">
   <a href="https://thekeyswitch.com">Live Site</a>
   |
-  <a href="ARCHITECTURE.md">Architecture</a>
-  |
-  <a href="SPECIFICATIONS.md">Specifications</a>
-  |
-  <a href="AUDIT.md">Audit</a>
+  <a href="docs/">Documentation</a>
 </p>
 
 <p align="center">
@@ -69,10 +65,12 @@ If you are setting this project up for the first time, the README below is alrea
 |- prometheus/      Prometheus scrape config
 |- db/              Non-Flyway database init hooks
 |- scripts/         Setup, deploy, and Flyway helper scripts
-|- docs/assets/     README branding assets
-|- ARCHITECTURE.md
-|- SPECIFICATIONS.md
-`- AUDIT.md
+|- docs/            Project documentation
+|  |- architecture/ Architecture spec, implementation details, audits
+|  |- operations/   Deployment, CI/CD, Docker Hub integration
+|  `- plans/        Dated implementation plans
+|- CLAUDE.md
+`- README.md
 ```
 
 ## Prerequisites
@@ -346,11 +344,11 @@ Check that these services are healthy:
 
 ## Documentation
 
-For the full deep dive:
+All project documentation lives in [`docs/`](docs/):
 
-- [ARCHITECTURE.md](ARCHITECTURE.md) - end-to-end architecture decisions and deployment model
-- [SPECIFICATIONS.md](SPECIFICATIONS.md) - implementation details, feature inventory, and testing notes
-- [AUDIT.md](AUDIT.md) - current audit summary and remediation history
+- **[Architecture](docs/architecture/)** — system design, specifications, and quality audits
+- **[Operations](docs/operations/)** — deployment, CI/CD, Docker Hub integration
+- **[Plans](docs/plans/)** — dated implementation plans and roadmaps
 
 ## License
 

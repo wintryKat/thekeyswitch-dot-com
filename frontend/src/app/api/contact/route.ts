@@ -66,13 +66,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // TODO: In production, send an email or persist to a database here.
-    console.log("[Contact Form]", {
-      name: name.trim(),
-      email: email.trim(),
-      message: message.trim().slice(0, 200) + "...",
-      timestamp: new Date().toISOString(),
-    });
+    // Send via Azure Function if configured, otherwise log and acknowledge
+    const functionUrl = process.env.AZURE_CONTACT_FUNCTION_URL;
+    if (functionUrl) {
+      try {
+        const azureRes = await fetch(functionUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: name.trim(),
+            email: email.trim(),
+            message: message.trim(),
+          }),
+        });
+        if (!azureRes.ok) {
+          console.error("[Contact Form] Azure Function error:", azureRes.status);
+          // Still return success to user — don't expose backend failures
+        }
+      } catch (err) {
+        console.error("[Contact Form] Azure Function unreachable:", err);
+      }
+    } else {
+      console.log("[Contact Form]", {
+        name: name.trim(),
+        email: email.trim(),
+        message: message.trim().slice(0, 200) + "...",
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     return NextResponse.json({
       success: true,

@@ -1,0 +1,17 @@
+{
+  "name": "thekeyswitch-contact-email",
+  "version": "1.0.0",
+  "description": "Azure Function: sends contact form emails via Azure Communication Services",
+  "main": "src/functions/contactEmail.js",
+  "scripts": {
+    "start": "func start",
+    "test": "node --test src/functions/contactEmail.test.js"
+  },
+  "dependencies": {
+    "@azure/communication-email": "^1.0.0",
+    "@azure/functions": "^4.0.0"
+  },
+  "devDependencies": {
+    "azure-functions-core-tools": "^4.0.0"
+  }
+}
