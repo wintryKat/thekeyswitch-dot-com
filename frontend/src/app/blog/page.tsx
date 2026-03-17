@@ -47,14 +47,14 @@ export default async function BlogPage() {
       <section className="mb-12 text-center">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--surface-border)] bg-[var(--surface)] px-4 py-1.5 text-xs font-medium tracking-wide text-[var(--muted)]">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
-          Engineering Blog
+          Blog
         </div>
         <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-[var(--foreground)] md:text-5xl">
-          Technical Writing
+          Blog
         </h1>
         <p className="mx-auto max-w-2xl text-lg text-[var(--muted)]">
-          Deep-dives on architecture decisions, performance optimization,
-          mechanical keyboards, and lessons from production systems.
+          Notes on building things for the web, mechanical keyboards,
+          and whatever else I find worth writing about.
         </p>
       </section>
 
@@ -115,7 +115,7 @@ export default async function BlogPage() {
           ))}
         </div>
       ) : (
-        /* Coming Soon state */
+        /* No posts yet */
         <div className="flex flex-col items-center justify-center rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] px-8 py-20 text-center">
           <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--accent)]/10 text-[var(--accent-light)]">
             <svg
@@ -136,11 +136,11 @@ export default async function BlogPage() {
             </svg>
           </div>
           <h2 className="mb-2 text-xl font-semibold text-[var(--foreground)]">
-            Coming Soon
+            Nothing here yet
           </h2>
           <p className="max-w-md text-sm text-[var(--muted)]">
-            Technical articles are being crafted. Check back soon for deep-dives
-            on architecture, performance, and engineering best practices.
+            Posts will show up here as they get written. In the meantime,
+            the rest of this site is the work sample.
           </p>
         </div>
       )}

@@ -23,7 +23,7 @@ describe('Nav', () => {
     render(<Nav />);
     expect(screen.getAllByText('Home').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('About').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('Resume').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Résumé').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('Blog').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('Switches').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText('Weather').length).toBeGreaterThanOrEqual(1);

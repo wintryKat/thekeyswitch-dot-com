@@ -1,3 +1,5 @@
+export type UnitSystem = "imperial" | "metric";
+
 export interface CurrentWeather {
   temperature: number;
   humidity: number;
@@ -27,13 +29,25 @@ export interface WeatherData {
   hourly: HourlyForecast;
   daily: DailyForecast;
   locationName: string;
+  units: UnitSystem;
+}
+
+export function getUnitLabels(units: UnitSystem) {
+  return units === "imperial"
+    ? { temp: "\u00b0F", speed: "mph", precip: "in" }
+    : { temp: "\u00b0C", speed: "km/h", precip: "mm" };
 }
 
 export async function fetchWeather(
   lat: number,
   lon: number,
+  units: UnitSystem = "imperial",
   locationHint?: string
 ): Promise<WeatherData> {
+  const tempUnit = units === "imperial" ? "fahrenheit" : "celsius";
+  const speedUnit = units === "imperial" ? "mph" : "kmh";
+  const precipUnit = units === "imperial" ? "inch" : "mm";
+
   const params = new URLSearchParams({
     latitude: lat.toString(),
     longitude: lon.toString(),
@@ -43,6 +57,9 @@ export async function fetchWeather(
     daily: "temperature_2m_max,temperature_2m_min,weather_code,sunrise,sunset",
     timezone: "auto",
     forecast_days: "7",
+    temperature_unit: tempUnit,
+    wind_speed_unit: speedUnit,
+    precipitation_unit: precipUnit,
   });
 
   const response = await fetch(
@@ -51,9 +68,8 @@ export async function fetchWeather(
   if (!response.ok) throw new Error("Failed to fetch weather data");
   const data = await response.json();
 
-  // Location name — prefer the optional name parameter, fall back to coords
   const locationName =
-    locationHint || `${lat.toFixed(2)}°, ${lon.toFixed(2)}°`;
+    locationHint || `${lat.toFixed(2)}\u00b0, ${lon.toFixed(2)}\u00b0`;
 
   return {
     current: {
@@ -78,12 +94,47 @@ export async function fetchWeather(
       sunset: data.daily.sunset,
     },
     locationName,
+    units,
   };
+}
+
+/**
+ * Reverse geocode lat/lon to a readable place name using Nominatim (OSM).
+ * Returns "City, State" for US locations, "City, Country" otherwise.
+ */
+export async function reverseGeocode(
+  lat: number,
+  lon: number
+): Promise<string> {
+  try {
+    const res = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&zoom=10`,
+      { headers: { "User-Agent": "thekeyswitch.com weather-dashboard" } }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      const addr = data.address;
+      const city =
+        addr?.city || addr?.town || addr?.village || addr?.county || "";
+      const state = addr?.state || "";
+      const country = addr?.country_code?.toUpperCase() || "";
+      if (city && state && country === "US") {
+        return `${city}, ${state}`;
+      }
+      if (city && country) {
+        return `${city}, ${country}`;
+      }
+      if (city) return city;
+    }
+  } catch {
+    // Silently fall back
+  }
+  return "Your Location";
 }
 
 export async function searchCity(
   query: string
-): Promise<Array<{ name: string; lat: number; lon: number; country: string }>> {
+): Promise<Array<{ name: string; lat: number; lon: number; country: string; admin1?: string }>> {
   const response = await fetch(
     `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5`
   );
@@ -94,6 +145,7 @@ export async function searchCity(
     lat: r.latitude as number,
     lon: r.longitude as number,
     country: (r.country as string) || "",
+    admin1: (r.admin1 as string) || "",
   }));
 }
 

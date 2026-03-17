@@ -9,7 +9,7 @@ import ThemeToggle from "./ThemeToggle";
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/resume", label: "Resume" },
+  { href: "/resume", label: "R\u00e9sum\u00e9" },
   { href: "/blog", label: "Blog" },
   { href: "/switches", label: "Switches" },
   { href: "/weather", label: "Weather" },

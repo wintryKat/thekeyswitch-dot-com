@@ -5,15 +5,39 @@ import dynamic from "next/dynamic";
 import {
   fetchWeather,
   searchCity,
+  reverseGeocode,
   getWeatherDescription,
   getWeatherEmoji,
+  getUnitLabels,
   type WeatherData,
+  type UnitSystem,
 } from "@/lib/weather";
 
 const TemperatureChart = dynamic(
   () => import("@/components/charts/TemperatureChart"),
   { ssr: false, loading: () => <ChartSkeleton /> }
 );
+
+/* ---------- localStorage helpers ---------- */
+
+function getSavedUnits(): UnitSystem {
+  if (typeof window === "undefined") return "imperial";
+  try {
+    const stored = localStorage.getItem("weather-units");
+    if (stored === "metric" || stored === "imperial") return stored;
+  } catch {
+    // localStorage unavailable
+  }
+  return "imperial";
+}
+
+function saveUnits(units: UnitSystem) {
+  try {
+    localStorage.setItem("weather-units", units);
+  } catch {
+    // localStorage unavailable
+  }
+}
 
 /* ---------- tiny helpers ---------- */
 
@@ -45,29 +69,58 @@ export default function WeatherPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [geoBlocked, setGeoBlocked] = useState(false);
+  const [units, setUnits] = useState<UnitSystem>(getSavedUnits);
+
+  /* remember last coords for unit toggle re-fetch */
+  const lastCoordsRef = useRef<{ lat: number; lon: number } | null>(null);
 
   /* city search */
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<
-    Array<{ name: string; lat: number; lon: number; country: string }>
+    Array<{ name: string; lat: number; lon: number; country: string; admin1?: string }>
   >([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const refreshRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   /* load weather for coords */
-  const loadWeather = useCallback(async (lat: number, lon: number, locationHint?: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await fetchWeather(lat, lon, locationHint);
-      setWeather(data);
-    } catch {
-      setError("Failed to fetch weather data. Please try again.");
-    } finally {
-      setLoading(false);
+  const loadWeather = useCallback(
+    async (lat: number, lon: number, unitsOverride?: UnitSystem, locationHint?: string) => {
+      setLoading(true);
+      setError(null);
+      lastCoordsRef.current = { lat, lon };
+      const u = unitsOverride ?? units;
+      try {
+        /* reverse-geocode if no location hint provided */
+        const name = locationHint ?? (await reverseGeocode(lat, lon));
+        const data = await fetchWeather(lat, lon, u, name);
+        setWeather(data);
+      } catch {
+        setError("Failed to fetch weather data. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [units]
+  );
+
+  /* toggle units */
+  const toggleUnits = useCallback(() => {
+    const next: UnitSystem = units === "imperial" ? "metric" : "imperial";
+    setUnits(next);
+    saveUnits(next);
+    if (lastCoordsRef.current && weather) {
+      const { lat, lon } = lastCoordsRef.current;
+      /* keep existing location name so we don't re-geocode */
+      const hint = weather.locationName;
+      setLoading(true);
+      setError(null);
+      fetchWeather(lat, lon, next, hint)
+        .then((data) => setWeather(data))
+        .catch(() => setError("Failed to refresh weather data."))
+        .finally(() => setLoading(false));
     }
-  }, []);
+  }, [units, weather]);
 
   /* geolocation on mount */
   useEffect(() => {
@@ -78,7 +131,7 @@ export default function WeatherPage() {
     }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        loadWeather(pos.coords.latitude, pos.coords.longitude, "Your Location");
+        loadWeather(pos.coords.latitude, pos.coords.longitude);
       },
       () => {
         setGeoBlocked(true);
@@ -86,18 +139,25 @@ export default function WeatherPage() {
       },
       { timeout: 10000 }
     );
-  }, [loadWeather]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /* auto-refresh every 15 min */
   useEffect(() => {
-    if (!weather) return;
+    if (!weather || !lastCoordsRef.current) return;
+    const coords = lastCoordsRef.current;
+    const hint = weather.locationName;
     refreshRef.current = setInterval(() => {
-      /* re-fetch silently; coords cached via locationName */
+      fetchWeather(coords.lat, coords.lon, units, hint)
+        .then((data) => setWeather(data))
+        .catch(() => {
+          /* silent refresh failure */
+        });
     }, 15 * 60 * 1000);
     return () => {
       if (refreshRef.current) clearInterval(refreshRef.current);
     };
-  }, [weather]);
+  }, [weather, units]);
 
   /* debounced city search */
   useEffect(() => {
@@ -122,13 +182,19 @@ export default function WeatherPage() {
     lat: number;
     lon: number;
     country: string;
+    admin1?: string;
   }) => {
     setShowDropdown(false);
     setSearchQuery("");
     setSearchResults([]);
     setGeoBlocked(false);
-    loadWeather(city.lat, city.lon, `${city.name}, ${city.country}`);
+    const label = city.admin1
+      ? `${city.name}, ${city.admin1}`
+      : `${city.name}, ${city.country}`;
+    loadWeather(city.lat, city.lon, units, label);
   };
+
+  const unitLabels = getUnitLabels(units);
 
   /* ---------- render ---------- */
 
@@ -199,9 +265,23 @@ export default function WeatherPage() {
       {/* header */}
       <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="mb-1 text-sm font-medium uppercase tracking-wider text-[var(--muted)]">
-            Current Weather
-          </p>
+          <div className="mb-1 flex items-center gap-3">
+            <p className="text-sm font-medium uppercase tracking-wider text-[var(--muted)]">
+              Current Weather
+            </p>
+            {/* unit toggle */}
+            <button
+              onClick={toggleUnits}
+              className="rounded-md border border-[var(--surface-border)] bg-[var(--surface)] px-2.5 py-1 text-xs font-semibold text-[var(--foreground)] transition-colors hover:border-[var(--accent)]/40 hover:bg-[var(--accent)]/10"
+              aria-label={`Switch to ${units === "imperial" ? "metric" : "imperial"} units`}
+            >
+              {units === "imperial" ? "\u00b0F" : "\u00b0C"}
+              <span className="mx-1 text-[var(--muted)]">/</span>
+              <span className="text-[var(--muted)]">
+                {units === "imperial" ? "\u00b0C" : "\u00b0F"}
+              </span>
+            </button>
+          </div>
           <h1 className="text-4xl font-extrabold tracking-tight text-[var(--foreground)]">
             {locationName}
           </h1>
@@ -229,7 +309,7 @@ export default function WeatherPage() {
               <p className="text-5xl font-extrabold text-[var(--foreground)]">
                 {current.temperature.toFixed(1)}
                 <span className="text-2xl font-normal text-[var(--muted)]">
-                  &deg;C
+                  {unitLabels.temp}
                 </span>
               </p>
               <p className="mt-1 text-lg text-[var(--muted)]">
@@ -245,7 +325,7 @@ export default function WeatherPage() {
         <StatCard
           label="Wind Speed"
           value={`${current.windSpeed.toFixed(1)}`}
-          unit="km/h"
+          unit={unitLabels.speed}
         />
       </div>
 
@@ -368,12 +448,14 @@ function SearchBox({
     lat: number;
     lon: number;
     country: string;
+    admin1?: string;
   }>;
   selectCity: (c: {
     name: string;
     lat: number;
     lon: number;
     country: string;
+    admin1?: string;
   }) => void;
   setShowDropdown: (v: boolean) => void;
   compact?: boolean;
@@ -404,6 +486,9 @@ function SearchBox({
                 className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-[var(--foreground)] transition-colors hover:bg-[var(--accent)]/10"
               >
                 <span className="font-medium">{city.name}</span>
+                {city.admin1 && (
+                  <span className="text-[var(--muted)]">{city.admin1},</span>
+                )}
                 <span className="text-[var(--muted)]">{city.country}</span>
               </button>
             </li>

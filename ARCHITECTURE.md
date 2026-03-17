@@ -995,54 +995,46 @@ Single monorepo with the following top-level directories: `frontend/`, `api/`, `
 
 ### Deployment Strategy
 
-For a single-VPS deployment, the CI/CD pipeline is deliberately simple:
+The CI/CD pipeline uses a registry-backed deploy pattern: images are built in GitHub Actions, pushed to Docker Hub, and pulled on the VPS. The VPS never builds images, preserving its limited RAM and CPU for running services.
 
 1. Push to `main` branch on GitHub
 2. GitHub Actions runs tests (frontend: `npm test`, API: `./gradlew test`)
-3. If tests pass, SSH into the VPS and run the deploy script
-4. Deploy script: `git pull && docker compose build && docker compose up -d`
+3. If tests pass, build Docker images for api, web, and caddy
+4. Push images to Docker Hub (`wintrykat/thekeyswitch-api`, `wintrykat/thekeyswitch-web`, `wintrykat/thekeyswitch-caddy`) tagged with `:latest` and `:sha-<commit>`
+5. Run Docker Scout vulnerability scans on api and web images
+6. SSH to VPS and run: `docker compose pull && docker compose up -d`
 
-This is not a zero-downtime deployment. For a personal portfolio site with negligible traffic, the 10–30 seconds of downtime during a deploy is acceptable. A blue-green or rolling deployment would require a load balancer and duplicate services, consuming resources that aren't justified.
+Each image is tagged with both `:latest` (used by `docker-compose.yml`) and `:sha-<commit>` (immutable, used for rollback). To roll back, pin the service to a specific SHA tag in `docker-compose.yml` and redeploy.
+
+This is not a zero-downtime deployment. For a personal portfolio site with negligible traffic, the 10–30 seconds of downtime during a deploy is acceptable.
+
+### Docker Hub Registry
+
+Four private repositories under `wintrykat/`:
+
+| Repository | Contents |
+|---|---|
+| `wintrykat/thekeyswitch-api` | Spring Boot multi-stage layered JAR, non-root user |
+| `wintrykat/thekeyswitch-web` | Next.js standalone build, non-root user |
+| `wintrykat/thekeyswitch-caddy` | xcaddy with CrowdSec bouncer plugin |
+| `wintrykat/thekeyswitch-tools` | Reserved for future tooling |
+
+Two access tokens with separated permissions: CI read/write token (GitHub Actions), VPS read-only pull token.
 
 ### GitHub Actions Workflow
 
-```yaml
-name: Deploy
-on:
-  push:
-    branches: [main]
+See `.github/workflows/deploy.yml` for the full workflow. The pipeline has three jobs:
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Test Frontend
-        working-directory: frontend
-        run: |
-          npm ci
-          npm test
-      - name: Test API
-        working-directory: api
-        run: ./gradlew test
+1. **test** — runs API and frontend test suites
+2. **build-and-push** — builds Docker images, pushes to Docker Hub, runs Scout scans
+3. **deploy** — SSHs to VPS to pull images and restart services
 
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1
-        with:
-          host: 212.38.95.37
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            cd /opt/thekeyswitch
-            git pull origin main
-            docker compose build --parallel
-            docker compose up -d
-            docker compose ps
-            docker system prune -f
+### Local Development
+
+For local development, use the dev compose override which adds `build:` directives back:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 ```
 
 ### Database Migrations

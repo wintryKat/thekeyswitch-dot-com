@@ -20,11 +20,11 @@ public class MetricsProxyService {
         Map<String, Object> metrics = new HashMap<>();
 
         metrics.put("cpuUsagePercent", queryPrometheus("100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)"));
-        metrics.put("memoryUsedBytes", queryPrometheus("node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes"));
-        metrics.put("memoryTotalBytes", queryPrometheus("node_memory_MemTotal_bytes"));
-        metrics.put("diskUsedBytes", queryPrometheus("node_filesystem_size_bytes{mountpoint=\"/\"} - node_filesystem_avail_bytes{mountpoint=\"/\"}"));
-        metrics.put("diskTotalBytes", queryPrometheus("node_filesystem_size_bytes{mountpoint=\"/\"}"));
-        metrics.put("uptimeSeconds", queryPrometheus("node_time_seconds - node_boot_time_seconds"));
+        metrics.put("memoryUsedBytes", (long) queryPrometheus("node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes"));
+        metrics.put("memoryTotalBytes", (long) queryPrometheus("node_memory_MemTotal_bytes"));
+        metrics.put("diskUsedBytes", (long) queryPrometheus("node_filesystem_size_bytes{mountpoint=\"/\"} - node_filesystem_avail_bytes{mountpoint=\"/\"}"));
+        metrics.put("diskTotalBytes", (long) queryPrometheus("node_filesystem_size_bytes{mountpoint=\"/\"}"));
+        metrics.put("uptimeSeconds", (long) queryPrometheus("node_time_seconds - node_boot_time_seconds"));
         metrics.put("loadAverage1m", queryPrometheus("node_load1"));
         metrics.put("loadAverage5m", queryPrometheus("node_load5"));
         metrics.put("loadAverage15m", queryPrometheus("node_load15"));

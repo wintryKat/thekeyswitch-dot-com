@@ -30,7 +30,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --foreground: #ede8f5;
     --background: #0c0a10;
     --accent: #8b5cf6;

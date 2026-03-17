@@ -6,9 +6,9 @@ import Badge from "@/components/ui/Badge";
 import Card from "@/components/ui/Card";
 
 export const metadata: Metadata = {
-  title: "Resume | The Key Switch",
+  title: "R\u00e9sum\u00e9 | The Key Switch",
   description:
-    "Professional experience, technical skills, and education for a senior web engineer.",
+    "Professional experience, technical skills, and education for a senior full-stack software engineer.",
 };
 
 interface Experience {
@@ -46,55 +46,57 @@ const decorativeIconProps = {
 
 const fallbackExperience: Experience[] = [
   {
-    company: "The Key Switch",
-    title: "Founder & Lead Engineer",
-    location: "Remote",
-    startDate: "2024",
-    endDate: null,
+    company: "Cubic Transportation Systems / Umo Mobility",
+    title: "Senior Front End Software Engineer",
+    location: "Austin, TX",
+    startDate: "2021",
+    endDate: "2026",
     highlights: [
-      "Designed and built a full-stack portfolio platform with Next.js 15, Spring Boot, and PostgreSQL",
-      "Implemented a Spring for GraphQL API serving keyboard switch data and blog content",
-      "Built interactive force-curve visualizations with D3.js for mechanical keyboard switch comparison",
-      "Set up CI/CD pipeline with GitHub Actions, Docker Compose, and Caddy reverse proxy",
-      "Integrated Prometheus, container metrics, and custom dashboards for observability",
+      "Built a Flutter mobile UI module integrating AWS Cognito authentication, designed for embedding into native iOS and Android applications",
+      "Developed and maintained AWS Lambda function handlers extending Cognito capabilities via API Gateway",
+      "Extended Angular applications with new authentication flows, UI features, and functionality; contributed to React application maintenance",
+      "Developed WCAG 2.1 accessibility testing automation for Flutter applications using Appium and Dart",
+      "Applied GitHub Copilot daily for prototyping, refactoring, and code quality review",
+      "Reviewed pull requests across the engineering team for quality assurance and standards compliance",
+      "Updated Terraform infrastructure definitions for services under active development",
     ],
   },
   {
-    company: "Senior Engineering Role",
-    title: "Senior Software Engineer",
-    location: "Remote",
-    startDate: "2020",
-    endDate: "2024",
+    company: "Cubic Corporation",
+    title: "Senior Full-stack Web Developer",
+    location: "Austin, TX",
+    startDate: "2019",
+    endDate: "2021",
     highlights: [
-      "Led frontend architecture migration from legacy jQuery to React with TypeScript",
-      "Designed and implemented microservices handling 50K+ RPM with Spring Boot and Kotlin",
-      "Mentored junior engineers through code reviews, pair programming, and architecture discussions",
-      "Reduced page load times by 60% through code splitting, SSR, and CDN optimization",
-      "Established testing culture achieving 85%+ code coverage across frontend and backend",
+      "Maintained and extended an internal ideation platform and peer-recognition system built on AngularJS, Node.js, Express.js, and MongoDB, containerized with Docker",
+      "Augmented frontend and backend with new features and data support per stakeholder direction",
+      "Prototyped new projects to validate technical approaches before committing to full development",
+      "Administered services and MongoDB database for internally hosted applications",
     ],
   },
   {
-    company: "Mid-Level Engineering Role",
-    title: "Software Engineer",
-    location: "Hybrid",
-    startDate: "2017",
-    endDate: "2020",
+    company: "Cond\u00e9 Nast",
+    title: "Senior Analyst: Custom Applications",
+    location: "Wilmington, DE; later Austin, TX",
+    startDate: "2009",
+    endDate: "2018",
     highlights: [
-      "Built real-time data dashboards with React, D3.js, and WebSocket connections",
-      "Developed RESTful APIs with Node.js and Express serving mobile and web clients",
-      "Implemented OAuth 2.0 / OpenID Connect authentication flows",
-      "Migrated monolithic application to containerized microservices with Docker and Kubernetes",
+      "Designed, prototyped, and built web applications across Vogue, Bon App\u00e9tit, Cond\u00e9 Nast Entertainment, and Golf Digest",
+      "Built and owned a JavaScript-based content collection and scoring system used by 1,200 reviewers across multiple years",
+      "Led extension of the Atex Polopoly CMS (Java) that became the backbone of the company\u2019s intranet",
+      "Developed applications across PHP, Java, Python, Node.js, Ember.js, and SQL with various templating engines",
+      "Owned systems end-to-end: requirements gathering, prototyping, development, deployment, and iterative improvement",
     ],
   },
 ];
 
 const fallbackEducation: Education[] = [
   {
-    institution: "University",
-    degree: "Bachelor of Science",
+    institution: "Drexel University, College of Engineering",
+    degree: "Bachelor of Arts",
     field: "Computer Science",
-    startYear: "2013",
-    endYear: "2017",
+    startYear: "2000",
+    endYear: "2006",
   },
 ];
 
@@ -102,31 +104,31 @@ const fallbackSkills: SkillGroup[] = [
   {
     category: "Frontend",
     items: [
-      { name: "TypeScript / JavaScript", level: 95 },
-      { name: "React / Next.js", level: 95 },
-      { name: "Tailwind CSS", level: 90 },
-      { name: "D3.js / Data Viz", level: 80 },
-      { name: "Three.js / WebXR", level: 70 },
+      { name: "JavaScript / TypeScript", level: 90 },
+      { name: "Angular / AngularJS", level: 85 },
+      { name: "Flutter / Dart", level: 80 },
+      { name: "HTML / CSS / SASS", level: 90 },
+      { name: "React (professional exposure)", level: 30 },
     ],
   },
   {
     category: "Backend",
     items: [
-      { name: "Spring Boot / Kotlin", level: 90 },
-      { name: "Node.js", level: 85 },
-      { name: "GraphQL", level: 90 },
-      { name: "PostgreSQL", level: 85 },
-      { name: "Redis", level: 75 },
+      { name: "Node.js / Express.js", level: 85 },
+      { name: "Java / Spring Boot", level: 60 },
+      { name: "PHP / Python / Flask", level: 70 },
+      { name: "SQL (SQL Server, Oracle, SQLite)", level: 80 },
+      { name: "MongoDB", level: 75 },
     ],
   },
   {
-    category: "Infrastructure",
+    category: "Infrastructure & Tools",
     items: [
-      { name: "Docker / Compose", level: 90 },
-      { name: "CI/CD (GitHub Actions)", level: 85 },
-      { name: "Kubernetes", level: 70 },
-      { name: "AWS / Cloudflare", level: 75 },
-      { name: "Observability (Prometheus/Micrometer)", level: 80 },
+      { name: "AWS (Lambda, Cognito, API Gateway, S3)", level: 75 },
+      { name: "Docker / Compose", level: 70 },
+      { name: "Terraform / GitHub Actions", level: 65 },
+      { name: "Git / GitHub / Jira", level: 90 },
+      { name: "Linux (multi-distro)", level: 80 },
     ],
   },
 ];
@@ -203,14 +205,14 @@ export default async function ResumePage() {
       <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="mb-2 text-4xl font-extrabold tracking-tight text-[var(--foreground)] md:text-5xl">
-            Resume
+            R&eacute;sum&eacute;
           </h1>
           <p className="text-lg text-[var(--muted)]">
             Professional experience, skills, and education.
           </p>
         </div>
         <a
-          href="mailto:jobs@thekeyswitch.com?subject=Resume%20Request"
+          href="mailto:jobs@thekeyswitch.com?subject=R%C3%A9sum%C3%A9%20Request"
           className="inline-flex items-center gap-2 rounded-lg bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[var(--accent)]/25 transition-all hover:bg-[var(--accent-light)] hover:shadow-[var(--accent)]/40 hover:-translate-y-0.5"
         >
           <svg
@@ -228,7 +230,7 @@ export default async function ResumePage() {
             <polyline points="7 10 12 15 17 10" />
             <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
-          Request Resume
+          Request R&eacute;sum&eacute;
         </a>
       </div>
 

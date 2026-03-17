@@ -12,9 +12,7 @@ volumes:
 
 services:
   caddy:
-    build:
-      context: ./caddy
-      dockerfile: Dockerfile
+    image: wintrykat/thekeyswitch-caddy:latest
     restart: unless-stopped
     ports:
       - "80:80"
@@ -34,9 +32,7 @@ services:
       - internal
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: wintrykat/thekeyswitch-web:latest
     restart: unless-stopped
     environment:
       NEXT_PUBLIC_GRAPHQL_URL: https://thekeyswitch.com/graphql
@@ -48,9 +44,7 @@ services:
       - internal
 
   api:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
+    image: wintrykat/thekeyswitch-api:latest
     restart: unless-stopped
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/thekeyswitch

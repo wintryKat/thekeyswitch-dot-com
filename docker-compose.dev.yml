@@ -3,6 +3,9 @@
 
 services:
   caddy:
+    build:
+      context: ./caddy
+      dockerfile: Dockerfile
     volumes:
       - ./caddy/Caddyfile.dev:/etc/caddy/Caddyfile:ro
 
@@ -20,6 +23,9 @@ services:
       - "3000:3000"
 
   api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
     environment:
       SPRING_PROFILES_ACTIVE: default
       ADMIN_BOOTSTRAP_USERNAME: ${ADMIN_BOOTSTRAP_USERNAME:-admin}
